@@ -6,14 +6,7 @@ import router from './router'
 
 // Vuetify 3.3.10
 import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
+import vuetify from './plugins/vuetify'
 
 const app = createApp(App)
 
