@@ -1,0 +1,178 @@
+@import './colors.scss';
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+//header/nav placeholder
+header,
+nav {
+  background-color: map-get($baseColors, $key: orange);
+}
+//end header/nav placeholder
+
+//section settings
+
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10vh;
+}
+
+//end section settings
+
+//headlines
+h1 {
+  text-align: center;
+  padding: 20vh;
+  color: map-get($map: $baseColors, $key: orange);
+}
+//end of headlines
+
+// section1
+
+.section1 {
+  .animation {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    animation: logoAnimation 4s;
+
+    p {
+      padding: 35px;
+      font-size: 20px;
+
+      span {
+        color: map-get($map: $baseColors, $key: pink);
+        padding-bottom: 10px;
+      }
+    }
+  }
+}
+
+//end of section1
+
+//section2
+.square1,
+.square2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 40vh;
+  width: 35vh;
+  margin: 20px;
+  
+  box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.2);
+  transition: 0.3s ease-in-out;
+
+  img {
+    max-width: 20vh;
+    margin-bottom: 2vh;
+  }
+
+  p {
+    text-align: center;
+  }
+}
+
+.square1:hover {
+  animation: square1Animation 5s;
+}
+
+.square2:hover {
+  animation: square2Animation 5s;
+}
+
+.tiles {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+//end of section2
+
+//section3
+.section3{
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  background-color: map-get($map: $baseColors, $key:pink)
+}
+.wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  text-align: center;
+  
+   
+  
+
+  img{
+    max-width: 5vh;
+  }
+
+  .content{
+    width: 35vh;
+    margin: 10px;
+    background-color: map-get($map: $baseColors, $key: bColor);
+    box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.2);
+
+  }
+}
+
+  
+
+
+//animations
+@keyframes logoAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// animation for square1/tiles
+
+@keyframes square1Animation {
+  0% {
+    box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  50% {
+    background-color: map-get($map: $baseColors, $key: pink);
+  }
+  100% {
+    background-color: map-get($map: $baseColors, $key: orange);
+  }
+}
+
+// animation for square2/tiles
+
+@keyframes square2Animation {
+  0% {
+    box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  50% {
+    background-color: map-get($map: $baseColors, $key: orange);
+  }
+  100% {
+    background-color: map-get($map: $baseColors, $key: pink);
+  }
+}
+
+table, tr, td,th{
+  border: solid black;
+}
