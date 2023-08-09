@@ -20,7 +20,7 @@ section {
 
 h1 {
   text-align: center;
-  padding: 20vh;
+  padding: 10vhvh;
   color: rgb(248, 175, 52);
 }
 
@@ -132,6 +132,9 @@ h1 {
     background-color: rgb(225, 168, 200);
   }
 }
-table, tr, td, th {
+table,
+tr,
+td,
+th {
   border: solid black;
 }/*# sourceMappingURL=style.css.map */
