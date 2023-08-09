@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue'
-import NavItems from './NavItems.vue';
-import NavDrawer from './NavDrawer.vue';
+import NavItems from '@/components/NavItems.vue'
+import NavDrawer from '@/components/NavDrawer.vue'
 
-const drawer = ref(false);
+const drawer = ref(false)
 const nav = ref([
   { text: 'Home', link: '/' },
   {
@@ -31,8 +31,12 @@ const nav = ref([
 
       <v-spacer />
 
-      <v-app-bar-nav-icon class="d-md-none" @click="drawer = !drawer" :icon="drawer ? 'mdi-close' : 'mdi-menu'" />
-      <NavItems :nav="nav" class="d-none d-md-block"/>
+      <v-app-bar-nav-icon
+        class="d-md-none"
+        @click="drawer = !drawer"
+        :icon="drawer ? 'mdi-close' : 'mdi-menu'"
+      />
+      <NavItems :nav="nav" class="d-none d-md-block" />
     </v-container>
   </v-app-bar>
 
