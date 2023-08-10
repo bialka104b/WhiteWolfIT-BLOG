@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useTheme } from 'vuetify';
 import NavItems from '@/components/NavItems.vue'
 import NavDrawer from '@/components/NavDrawer.vue'
 
@@ -22,6 +23,13 @@ const nav = ref([
   { text: 'Calculator', link: '/calculator' },
   { text: 'Sign in' }
 ])
+
+// Day/Night mode
+const theme = useTheme();
+const nightMode = ref(false)
+watch(nightMode, (val) => {
+  theme.global.name.value = val ? 'dark' : 'light';
+}, { immediate: true})
 </script>
 
 <template>
@@ -31,12 +39,25 @@ const nav = ref([
 
       <v-spacer />
 
+      <div class="d-flex align-center mr-5 mr-md-10">
+
+        <v-icon size="xsmall" icon="mdi-white-balance-sunny" />
+        <v-switch
+          v-model="nightMode"
+          hide-details
+          class="mx-3"
+          flat
+        />
+        <v-icon size="xsmall" icon="mdi-weather-night" />
+      </div>
+
+      <NavItems :nav="nav" class="d-none d-md-block" />
+
       <v-app-bar-nav-icon
         class="d-md-none"
         @click="drawer = !drawer"
         :icon="drawer ? 'mdi-close' : 'mdi-menu'"
       />
-      <NavItems :nav="nav" class="d-none d-md-block" />
     </v-container>
   </v-app-bar>
 
