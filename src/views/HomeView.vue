@@ -56,7 +56,7 @@
 
     <section class="section4">
       <div class="wrapper">
-        <h2><img src="../images/logo/Short white@iwhitewolf.png" alt="commpany logo" />Address</h2>
+        <h2><img src="../images/logo/Short white@iwhitewolf.png" alt="commpany logo" /><p>Address</p></h2>
         <div class="content">
           <img src="../images/Icon/mail-1454733_640.png" alt="mail icon" /><a href="">Mail</a>
         </div>
@@ -69,7 +69,7 @@
             alt="telephone icon"
             style="max-width: 3vh"
           />
-          +48 000 00 00
+          <p>+48 000 00 00</p>
         </div>
       </div>
 
