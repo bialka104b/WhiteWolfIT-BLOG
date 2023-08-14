@@ -5,7 +5,7 @@
   <main>
     <section class="section1">
       <div class="animation">
-        <img src="../images/logo/Short@iwhitewolf.png" alt="" />
+        <img src="../images/logo/Short white@iwhitewolf.png" alt="" />
         <p>
           <span>iWhiteWolf</span> <br />Lorem ipsum, dolor sit amet consectetur adipisicing elit.
           Inventore, amet?
@@ -13,32 +13,40 @@
       </div>
     </section>
 
+    <section class="section2">
+      <v-carousel hide-delimiters :show-arrows="false" :cycle="true">
+        <v-carousel-item cover><img src="../images/logo/Long@iwhitewolf.png" alt=""></v-carousel-item>
+
+        <v-carousel-item cover><img src="../images/logo/Long black@iwhitewolf.png" alt=""></v-carousel-item>
+      </v-carousel>
+    </section>
+
     <h1>What we do!!!</h1>
 
-    <section class="section2">
+    <section class="section3">
       <div class="tiles">
-        <div class="square1">
-          <img src="../images/SmallPic/a-notice-2410276_640.png" alt="Podróże" class="bas"/>
+        <div class="square">
+          <img src="../images/SmallPic/a-notice-2410276_640.png" alt="Podróże" class="bas" />
           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
         </div>
-        <div class="square2">
+        <div class="square">
           <img src="../images/SmallPic/a-heart-2438744_640.png" alt="Serce" />
           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
         </div>
-        <div class="square1">
+        <div class="square">
           <img src="../images/SmallPic/chip-1710300_640.png" alt="Procesor" />
           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
         </div>
-        <div class="square2">
+        <div class="square">
           <img src="../images/SmallPic/false-2061131_640.png" alt="X" />
           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
         </div>
-        <div class="square1">
+        <div class="square">
           <img src="../images/SmallPic/flat-2126880_640.png" alt="Komputer" />
           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
         </div>
-        <div class="square2">
-          <img src="../images/SmallPic/responsive-2440940_640.png" alt="Urządzenia" />
+        <div class="square">
+          <img src="../images/SmallPic/responsive-2440940_640.png" alt="Urządzenia" class="bas" />
           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
         </div>
       </div>
@@ -46,14 +54,14 @@
 
     <h1>CONTACT</h1>
 
-    <section class="section3">
+    <section class="section4">
       <div class="wrapper">
         <h2><img src="../images/logo/Short white@iwhitewolf.png" alt="commpany logo" />Address</h2>
         <div class="content">
           <img src="../images/Icon/mail-1454733_640.png" alt="mail icon" /><a href="">Mail</a>
         </div>
         <div class="content">
-          <p>Rzeszów, ul,Ulica 1/2 <br>00-000</p>
+          <p>Rzeszów, ul,Ulica 1/2 <br />00-000</p>
         </div>
         <div class="content">
           <img
@@ -66,7 +74,9 @@
       </div>
 
       <div class="wrapper">
-        <h2><img src="../images/Icon/communication-1809935_640.png" alt="" class="bas" />Social Media</h2>
+        <h2>
+          <img src="../images/Icon/communication-1809935_640.png" alt="" class="bas" />Social Media
+        </h2>
 
         <div class="content">
           <img src="../images/Icon/facebook.png" alt="facebook icon" /><a href="/">Facebook</a>

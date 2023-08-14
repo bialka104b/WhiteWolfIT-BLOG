@@ -6,19 +6,23 @@ body {
   flex-wrap: wrap;
   margin: 0;
   animation: startAnimation 1s;
-  background: linear-gradient(90deg, hsla(52, 85%, 50%, 1) 0%, hsla(313, 94%, 66%, 1) 100%);
-
-  background: -moz-linear-gradient(90deg, hsla(52, 85%, 50%, 1) 0%, hsla(313, 94%, 66%, 1) 100%);
-
-  background: -webkit-linear-gradient(90deg, hsla(52, 85%, 50%, 1) 0%, hsla(313, 94%, 66%, 1) 100%);
+  background: map-get($map: $baseColors, $key: back);
 }
 
 //header/nav placeholder
 header,
 nav {
-  background-color: white;
+  background-color: grey;
 }
 //end header/nav placeholder
+
+//link settings
+a {
+  color: map-get($map: $baseColors, $key: letters);
+  cursor: pointer;
+  text-decoration: none;
+}
+//end of link settings
 
 //section settings
 
@@ -35,13 +39,15 @@ section {
 h1 {
   text-align: center;
   padding: 5vh;
-  color: map-get($map: $baseColors, $key: headlines);
+  color: map-get($map: $baseColors, $key: hardPink);
 }
 //end of headlines
 
 // section1
 
 .section1 {
+  background: map-get($map: $baseColors, $key: gradient);
+
   .animation {
     display: flex;
     flex-direction: column;
@@ -69,40 +75,25 @@ h1 {
 //end of section1
 
 //section2
-.square1,
-.square2 {
+.v-carousel {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  height: 40vh;
-  width: 35vh;
-  margin: 2vh;
-  border-radius: 20%;
 
-  box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.5);
+  .v-window {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   img {
-    max-width: 20vh;
-    margin-bottom: 2vh;
-  }
-  .bas {
-    max-width: 30vh;
-  }
-
-  p {
-    color: map-get($map: $baseColors, $key: bColor);
-    text-align: center;
+    margin-top: 30vh;
+    max-width: 45vh;
   }
 }
+//end of section2
 
-.square1 {
-  background-color: map-get($map: $baseColors, $key: pink);
-}
-
-.square2 {
-  background-color: map-get($map: $baseColors, $key: orange);
-}
+//section3
 
 .tiles {
   display: flex;
@@ -110,13 +101,41 @@ h1 {
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
+
+  .square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 40vh;
+    width: 35vh;
+    margin: 5vh;
+    border-radius: 20%;
+
+    box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.5);
+
+    background: map-get($map: $baseColors, $key: gradient);
+
+    img {
+      max-width: 20vh;
+      margin-bottom: 2vh;
+    }
+    .bas {
+      max-width: 30vh;
+    }
+
+    p {
+      color: map-get($map: $baseColors, $key: bColor);
+      text-align: center;
+    }
+  }
 }
 
-//end of section2
+//end of section3
 
-//section3
+//section4
 
-.section3 {
+.section4 {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,8 +164,6 @@ h1 {
     color: map-get($map: $baseColors, $key: bColor);
   }
 
-  //end of section 3
-
   h2 {
     display: flex;
     justify-content: center;
@@ -159,10 +176,7 @@ h1 {
   }
 }
 
-a {
-  text-decoration: none;
-  color: map-get($map: $baseColors, $key: bColor);
-}
+//end of section 4
 
 //footer
 footer {
@@ -172,7 +186,7 @@ footer {
   flex-direction: column;
   color: map-get($map: $baseColors, $key: bColor);
 
-  background-color: map-get($map: $baseColors, $key: headlines);
+  background-color: map-get($map: $baseColors, $key: green);
 
   img {
     max-width: 3vh;
@@ -198,7 +212,9 @@ footer {
   }
 }
 
-//media/screen
+//end of animations
+
+//turned phone
 
 @media only screen and (min-width: 740px) {
   // section1
@@ -227,31 +243,38 @@ footer {
   //end of section1
 
   //section2
-
-  .square1,
-  .square2 {
-    height: 60vh;
-    width: 55vh;
-    margin: 2vh;
-    flex-basis: 30%;
-
+  .v-carousel {
     img {
-      max-width: 30vh;
-    }
-    .bas {
-      max-width: 50vh;
-    }
-
-    p {
-      font-size: 5vh;
-      text-align: center;
+      max-width: 200vh;
     }
   }
   //end of section2
 
   //section3
 
-  .section3 {
+  .tiles {
+    flex-basis: 100%;
+
+    .square {
+      height: 50vh;
+      width: 50vh;
+
+      img {
+        max-width: 25vh;
+      }
+      .bas {
+        max-width: 45vh;
+      }
+    }
+  }
+
+  //end of section3
+
+  
+
+  //section4
+
+  .section4 {
     align-items: start;
     flex-direction: row;
     .wrapper {
@@ -269,6 +292,8 @@ footer {
     }
   }
 
+  //end of section4
+
   //footer
   footer {
     flex-direction: row;
@@ -280,34 +305,51 @@ footer {
 
 //media for pc screen
 @media only screen and (min-width: 963px) {
+  //headlines
   h1 {
     font-size: 9vh;
   }
+  //end of headlines
 
-  .square1,
-  .square2 {
-    
-
-    height: 40vh;
-    width: 20vh;
-
+  //section2
+  .v-carousel {
     img {
-      max-width: 20vh;
-      margin-bottom: 2vh;
-    }
-    .bas {
-      max-width: 30vh;
-    }
-
-    p {
-      font-size: 3vh;
-     
+      margin: 0;
+      width: 100%;
+      height: 100%;
     }
   }
+  //end of section2
 
   //section3
 
   .section3 {
+    flex-basis: 30%;
+    .square {
+      height: 40vh;
+      width: 40vh;
+      background: transparent;
+      border: solid map-get($map: $baseColors, $key: borders) 1px;
+      position: relative;
+      overflow: hidden;
+
+      img {
+        max-width: 20vh;
+      }
+
+      p {
+        font-size: 3vh;
+      }
+      .bas {
+        max-width: 30vh;
+      }
+    }
+  }
+
+  //end of section3
+
+  //section4
+  .section4 {
     align-items: start;
     flex-direction: row;
     .wrapper {
@@ -319,14 +361,31 @@ footer {
       h2 {
         img {
           max-width: 10vh;
-
-          
         }
       }
     }
   }
+  //end of section4
 
+  //footer
   footer {
     font-size: 2vh;
   }
+  //end of footer
+}
+
+.square::before {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  background: map-get($map: $baseColors, $key: gradient);
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all 0.5s;
+}
+
+.square:hover::before {
+  width: 100%;
 }
