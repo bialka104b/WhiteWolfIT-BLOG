@@ -14,6 +14,7 @@ defineProps({
       flat
       class="text-body-1"
       :class="{ 'ml-2': index !== 0 }"
+      @click="item?.onClick"
     >
       {{ item.text }}
 

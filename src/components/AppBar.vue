@@ -3,7 +3,15 @@ import { ref, watch } from 'vue'
 import { useTheme } from 'vuetify';
 import NavItems from '@/components/NavItems.vue'
 import NavDrawer from '@/components/NavDrawer.vue'
+import LoginDialog from '@/components/LoginDialog.vue';
 
+// Login dialog management
+const loginDialog = ref(false);
+const openLoginDialog = () => {
+  loginDialog.value = true;
+}
+
+// Navigation & main drawer
 const drawer = ref(false)
 const nav = ref([
   { text: 'Home', link: '/' },
@@ -21,7 +29,7 @@ const nav = ref([
     ]
   },
   { text: 'Calculator', link: '/calculator' },
-  { text: 'Sign in' }
+  { text: 'Sign in', onClick: openLoginDialog }
 ])
 
 // Day/Night mode
@@ -61,5 +69,6 @@ watch(nightMode, (val) => {
     </v-container>
   </v-app-bar>
 
+  <LoginDialog v-model="loginDialog" />
   <NavDrawer :nav="nav" v-model="drawer" />
 </template>
