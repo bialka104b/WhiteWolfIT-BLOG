@@ -1,11 +1,11 @@
+import 'vuetify/styles'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
 
-// Vuetify 3.3.10
-import 'vuetify/styles'
+// plugins
 import vuetify from './plugins/vuetify'
 
 const app = createApp(App)
