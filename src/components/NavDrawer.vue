@@ -16,6 +16,7 @@ defineProps({
           rounded
           :class="{ 'mt-1': index !== 0 }"
           :title="item.text"
+          @click="item?.onClick"
         >
           <template v-if="item.items" v-slot:activator="{ props }">
             <v-list-item v-bind="props" :title="item.text" rounded />
