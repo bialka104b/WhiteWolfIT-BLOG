@@ -30,5 +30,5 @@ export const useUserStore = defineStore('user', () => {
     toast.success('You have been logged out.');
   }
 
-  return { userLoggedIn, login, logout }
+  return { access_token, userLoggedIn, login, logout }
 })
