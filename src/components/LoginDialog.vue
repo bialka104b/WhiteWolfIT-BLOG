@@ -1,7 +1,12 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
+import { toast } from 'vue3-toastify';
+import { useUserStore } from '@/stores/user';
+import { login as loginReq } from '@/services/authService';
 
+const emit = defineEmits(['onSuccess']);
 const formValid = ref(false);
+const loading = ref(false);
 
 const email = ref('');
 const emailRules = [
@@ -25,8 +30,18 @@ const passwordRules = [
 const passwordVisible = ref(false);
 
 // Login logic
-const login = () => {
-    // ...
+const userStore = useUserStore();
+const login = async () => {
+    loading.value = true;
+
+    await userStore.login(email.value, password.value);
+
+    if (userStore.userLoggedIn) {
+        toast.success('You have logged into your account');
+        emit('onSuccess');
+    }
+
+    loading.value = false;
 }
 </script>
 
@@ -83,6 +98,8 @@ const login = () => {
                     class="mt-5"
                     block
                     @click="login"
+                    :loading="loading"
+                    :disabled="loading || !email || !password || !formValid"
                 >
                     Sign in
                 </v-btn>
