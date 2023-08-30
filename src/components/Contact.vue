@@ -1,35 +1,36 @@
 <script>
 import { ref, defineComponent } from 'vue'
-// import { NewsModule } from 'C:/Users/mjamroz2/PROJEKTY_VSC/WhiteWolfIT-BLOG/api-client/src/news/index.js'
+// import { NewsModule } from '~/api-client/src/index.js'
+import { articles } from '@/services/blogService.js'
 
 export default defineComponent({
   name: 'Contact',
   setup() {
-    const authToken = '12345'
     const clients = {
-      // article: new NewsModule.Article()
+      article: articles()
     }
     return {
       clients
     }
   },
   async created() {
-    // await this.articleOnclick()
-    const res = await fetch('http://localhost:5000/api/articles')
-    const json = await res.json()
-    console.log(json)
+    await this.articleOnclick()
+    // const res = await fetch('http://localhost:5000/api/articles')
+    // const json = await res.json()
+    // console.log(json)
   },
   methods: {
-    // articleOnclick() {
-    //   this.clients.article
-    //     .toggleFavourite()
-    //     .then(() => {
-    //       console.log('działa')
-    //     })
-    //     .catch((error) => {
-    //       console.log(error)
-    //     })
-    // }
+    articleOnclick() {
+      this.clients.article
+        .then((res) => {
+          console.log('działa')
+          console.log(res.data)
+          // tu możesz zrobic cos z tymi danymi
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
   }
 })
 </script>
