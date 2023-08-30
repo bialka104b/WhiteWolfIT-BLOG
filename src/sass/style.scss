@@ -9,12 +9,7 @@ body {
   background: map-get($map: $baseColors, $key: back);
 }
 
-//header/nav placeholder
-header,
-nav {
-  background-color: grey;
-}
-//end header/nav placeholder
+
 
 //link settings
 a {
