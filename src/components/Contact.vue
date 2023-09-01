@@ -3,14 +3,20 @@ import { ref, defineComponent } from 'vue'
 // import { NewsModule } from '~/api-client/src/index.js'
 import { articles } from '@/services/blogService.js'
 
+
+
 export default defineComponent({
   name: 'Contact',
   setup() {
     const clients = {
       article: articles()
     }
+    const articlesData = ref([])
+   
+
     return {
-      clients
+      clients,
+      articlesData
     }
   },
   async created() {
@@ -23,9 +29,8 @@ export default defineComponent({
     articleOnclick() {
       this.clients.article
         .then((res) => {
-          console.log('działa')
-          console.log(res.data)
-          // tu możesz zrobic cos z tymi danymi
+          this.articlesData = res.data
+          console.log(this.articlesData)
         })
         .catch((error) => {
           console.log(error)
@@ -33,6 +38,17 @@ export default defineComponent({
     }
   }
 })
+
+//const createArticle = (title) => {
+//articleTitle = document.createElement('p')
+//articleTitle.textContent = title
+
+// console.log(articleTitle)
+
+// console.log(listOfArticles)
+
+// listOfArticles.append(articleTitle)
+// }
 </script>
 
 <template>
@@ -81,13 +97,14 @@ export default defineComponent({
     <div class="wrapper">
       <h2><img src="../images/Icon/book-2282152_640.png" alt="book icon" /> Blog</h2>
 
-      <div class="content">
-        <a href="">Article 1</a>
-      </div>
+     
+      <div v-for="article in articlesData" :key="article" >
+        <img :src=' article.thumbnail.url' alt="">
+        <h4 >{{ article.title }}</h4>
+        <p >{{ article.description }}</p>
 
-      <div class="content">
-        <a href="">Article 2</a>
       </div>
+      
     </div>
   </section>
 </template>

@@ -7,8 +7,8 @@ import Footer from '@/components/Footer.vue'
 </script>
 
 <template>
-  <Home />
-  <Carousel />
+  <Home/>
+  <Carousel/>
   <WhatWeDo/>
   <Contact/>
   <Footer/>
