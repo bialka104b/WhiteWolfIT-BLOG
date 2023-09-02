@@ -1,8 +1,7 @@
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useUserStore } from '@/stores/user';
-import { login as loginReq } from '@/services/authService';
 
 const emit = defineEmits(['onSuccess']);
 const formValid = ref(false);
