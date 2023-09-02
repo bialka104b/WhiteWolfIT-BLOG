@@ -8,12 +8,10 @@ export const useUserStore = defineStore('user', () => {
   const { cookies } = useCookies();
 
   // State
-  const access_token = ref(null);
+  const userLoggedIn = ref(cookies.isKey('accessToken'))
 
   // Getters
-  const userLoggedIn = computed(() => {
-    return !!access_token.value;
-  })
+  // ...
 
   // Actions
   async function login(email, password) {
@@ -21,8 +19,8 @@ export const useUserStore = defineStore('user', () => {
       const { data } = await loginReq(email, password);
       const token = data?.accessToken ?? ''; 
       
-      access_token.value = token;
       cookies.set('accessToken', token, '10s');
+      userLoggedIn.value = true;
     } catch (err) {
       const message = err?.response?.data?.message;
         
@@ -34,8 +32,8 @@ export const useUserStore = defineStore('user', () => {
     try {
       await logoutReq();
       
-      access_token.value = null;
       cookies.remove('accessToken');
+      userLoggedIn.value = false;
       
       if(!silent)
         toast.success('You have been logged out.');
@@ -51,13 +49,13 @@ export const useUserStore = defineStore('user', () => {
       const token = data?.accessToken; 
       
       if (token) {
-        access_token.value = token;
         cookies.set('accessToken', token, '15m');
+        userLoggedIn.value = true;
       }
     } catch(err) {
       logout(true)
     }
   }
 
-  return { access_token, userLoggedIn, login, logout, refresh }
+  return { userLoggedIn, login, logout, refresh }
 })
