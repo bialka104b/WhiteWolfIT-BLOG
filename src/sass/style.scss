@@ -9,8 +9,6 @@ body {
   background: map-get($map: $baseColors, $key: back);
 }
 
-
-
 //link settings
 a {
   color: map-get($map: $baseColors, $key: letters);
@@ -42,6 +40,8 @@ h1 {
 
 .section1 {
   background: map-get($map: $baseColors, $key: gradient);
+  height: 75vh;
+  margin-top: 25px;
 
   .animation {
     display: flex;
@@ -264,8 +264,6 @@ footer {
   }
 
   //end of section3
-
-  
 
   //section4
 
