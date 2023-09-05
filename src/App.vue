@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import { RouterView } from 'vue-router'
+import './sass/style.scss'
+
 import { useCookies } from 'vue3-cookies';
 import { useTheme } from 'vuetify';
 import { useUserStore } from '@/stores/user.js';
