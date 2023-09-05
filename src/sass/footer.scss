@@ -1,0 +1,54 @@
+@import './colors.scss';
+
+footer {
+  display: flex;
+  width: 100vw;
+  text-align: left;
+  flex-direction: column;
+  background: rgb(48, 49, 52);
+  color: white;
+  font-size: 0.8rem;
+}
+
+.footer-top {
+  width: 100%;
+  padding: 50px 0 40px 20px;
+  h1 {
+    margin-bottom: 20px;
+    &::after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 2px;
+      margin-bottom: 5px;
+      background-color: map-get($map: $baseColors, $key: hardPink);
+    }
+  }
+  h2 {
+    font-size: 1rem;
+    margin: 15px 0;
+  }
+}
+
+.footer-top__news {
+  margin-top: 30px;
+}
+
+.footer-bottom::before {
+  content: '';
+  display: block;
+  height: 2px;
+  width: 100%;
+  margin-bottom: 20px;
+  background-color: map-get($map: $baseColors, $key: hardPink);
+}
+
+.footer-bottom {
+  width: 100%;
+  padding: 0 20px 20px 20px;
+}
+
+.footer-bottom img {
+  margin-bottom: 10px;
+  height: 50px;
+}
