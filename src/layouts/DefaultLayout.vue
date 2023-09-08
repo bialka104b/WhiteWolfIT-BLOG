@@ -11,4 +11,5 @@ import HeroSection from '@/components/HeroSection.vue'
   <v-main>
     <RouterView />
   </v-main>
+  <footer></footer>
 </template>
