@@ -1,3 +1,3 @@
 export const theme = {
-    dark: false,
+  dark: false
 }
