@@ -2,31 +2,4 @@
 @import './header.scss';
 @import './main.scss';
 @import './footer.scss';
-
-body {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 0;
-  animation: startAnimation 1s;
-  background: map-get($map: $baseColors, $key: back);
-}
-
-//link settings
-a {
-  color: map-get($map: $baseColors, $key: letters);
-  cursor: pointer;
-  text-decoration: none;
-}
-//end of link settings
-
-//section settings
-
-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5vh 0 5vh 0;
-}
-
-//end section settings
+@import 'color';

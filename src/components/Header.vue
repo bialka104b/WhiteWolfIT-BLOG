@@ -1,11 +1,5 @@
 <template>
-  <v-carousel
-    height="75vh"
-    v-model="activeSlide"
-    hide-delimiters
-    :show-arrows="false"
-    :cycle="10000"
-  >
+  <v-carousel height="75vh" v-model="activeSlide" hide-delimiters :show-arrows="false">
     <v-carousel-item v-for="(item, index) in items" :key="index">
       <v-row
         justify="center"
