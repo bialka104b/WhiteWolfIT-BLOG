@@ -1,15 +1,16 @@
 import axios from 'axios'
-import { useUserStore } from '../stores/user.js'
+import { useCookies } from 'vue3-cookies'
 
 const instance = axios.create({
   baseURL: 'http://localhost:5000/api'
 })
 
 instance.interceptors.request.use((config) => {
-  const { access_token } = useUserStore()
+  const { cookies } = useCookies()
+  const token = cookies.get('accessToken')
 
-  if (!!access_token) {
-    config.headers.Authorization = `Bearer ${access_token}`
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
   }
 
   return config

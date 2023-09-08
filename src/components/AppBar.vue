@@ -40,14 +40,13 @@ const nav = computed(() => {
 
 // Day/Night mode
 const theme = useTheme()
-const nightMode = ref(false)
-watch(
-  nightMode,
-  (val) => {
-    theme.global.name.value = val ? 'dark' : 'light'
-  },
-  { immediate: true }
-)
+const nightMode = ref(!!window.localStorage.getItem('darkTheme'))
+watch(nightMode, (val) => {
+  if (val) window.localStorage.setItem('darkTheme', true)
+  else window.localStorage.removeItem('darkTheme', false)
+
+  theme.global.name.value = val ? 'dark' : 'light'
+})
 </script>
 
 <template>
