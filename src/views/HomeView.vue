@@ -1,3 +1,9 @@
+<script setup>
+import Header from '@/components/Header.vue'
+import Main from '@/components/Main.vue'
+import Footer from '@/components/Footer.vue'
+</script>
+
 <template>
   <nav>Nawigacja</nav>
   <header>Nagłówek</header>
@@ -122,6 +128,13 @@
       <a href="/">Privacy Policy</a>
     </footer>
   </main>
+  <Header />
+  <Main />
+  <Home />
+  <Carousel />
+  <WhatWeDo />
+  <Contact />
+  <Footer />
 </template>
 
 <script>

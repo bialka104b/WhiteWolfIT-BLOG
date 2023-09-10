@@ -1,43 +1,52 @@
 <script setup>
-import { ref, watch } from 'vue'
-import { useTheme } from 'vuetify';
+import { ref, watch, computed } from 'vue'
+import { useTheme } from 'vuetify'
+import { useUserStore } from '@/stores/user'
 import NavItems from '@/components/NavItems.vue'
 import NavDrawer from '@/components/NavDrawer.vue'
-import LoginDialog from '@/components/LoginDialog.vue';
+import LoginDialog from '@/components/LoginDialog.vue'
 
 // Login dialog management
-const loginDialog = ref(false);
+const loginDialog = ref(false)
+const userStore = useUserStore()
+
 const openLoginDialog = () => {
-  loginDialog.value = true;
+  loginDialog.value = true
 }
 
 // Navigation & main drawer
 const drawer = ref(false)
-const nav = ref([
-  { text: 'Home', link: '/' },
-  {
-    text: 'Blog',
-    items: [
-      {
-        text: 'Article 1',
-        link: '/blog/1'
-      },
-      {
-        text: 'Article 2',
-        link: '/blog/2'
-      }
-    ]
-  },
-  { text: 'Calculator', link: '/calculator' },
-  { text: 'Sign in', onClick: openLoginDialog }
-])
+const nav = computed(() => {
+  return [
+    { text: 'Home', link: '/' },
+    {
+      text: 'Blog',
+      items: [
+        {
+          text: 'Article 1',
+          link: '/blog/1'
+        },
+        {
+          text: 'Article 2',
+          link: '/blog/2'
+        }
+      ]
+    },
+    { text: 'Calculator', link: '/calculator' },
+    { text: 'Sign in', onClick: openLoginDialog, disabled: userStore.userLoggedIn },
+    { text: 'Logout', onClick: () => userStore.logout(), disabled: !userStore.userLoggedIn }
+  ].filter((el) => !el.disabled)
+})
 
 // Day/Night mode
-const theme = useTheme();
-const nightMode = ref(false)
+const theme = useTheme()
+const nightMode = ref(!!window.localStorage.getItem('darkTheme'))
 watch(nightMode, (val) => {
-  theme.global.name.value = val ? 'dark' : 'light';
-}, { immediate: true})
+  if (val) window.localStorage.setItem('darkTheme', true)
+  else window.localStorage.removeItem('darkTheme', false)
+
+  theme.global.name.value = val ? 'dark' : 'light'
+})
 </script>
 
 <template>
@@ -48,14 +57,8 @@ watch(nightMode, (val) => {
       <v-spacer />
 
       <div class="d-flex align-center mr-5 mr-md-10">
-
         <v-icon size="xsmall" icon="mdi-white-balance-sunny" />
-        <v-switch
-          v-model="nightMode"
-          hide-details
-          class="mx-3"
-          flat
-        />
+        <v-switch v-model="nightMode" hide-details class="mx-3" flat />
         <v-icon size="xsmall" icon="mdi-weather-night" />
       </div>
 
@@ -69,6 +72,6 @@ watch(nightMode, (val) => {
     </v-container>
   </v-app-bar>
 
-  <LoginDialog v-model="loginDialog" />
+  <LoginDialog v-model="loginDialog" @onSuccess="loginDialog = false" />
   <NavDrawer :nav="nav" v-model="drawer" />
 </template>
