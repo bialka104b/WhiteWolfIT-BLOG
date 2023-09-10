@@ -1,15 +1,42 @@
 <script setup>
-import { watch, provide } from 'vue';
+import { watch, provide, onBeforeUnmount } from 'vue';
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import RichEditorGroup from '@/components/RichEditor/RichEditorGroup.vue';
 import RichEditorButton from '@/components/RichEditor/RichEditorButton.vue';
+import RichEditorTable from './partials/RichEditorTable.vue';
 
 import StarterKit from '@tiptap/starter-kit'
 import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
+import Table from '@tiptap/extension-table'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
+import TableRow from '@tiptap/extension-table-row'
 
 const props = defineProps(['modelValue']);
 const emits = defineEmits(['update:modelValue']);
+
+// TableCell
+const CustomTableCell = TableCell.extend({
+  addAttributes() {
+    return {
+      // extend the existing attributes …
+      ...this.parent?.(),
+
+      // and add a new one …
+      backgroundColor: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-background-color'),
+        renderHTML: attributes => {
+          return {
+            'data-background-color': attributes.backgroundColor,
+            style: `background-color: ${attributes.backgroundColor}`,
+          }
+        },
+      },
+    }
+  },
+})
 
 // Create editor
 const editor = useEditor({
@@ -18,10 +45,19 @@ const editor = useEditor({
         StarterKit,
         Highlight,
         Typography,
+        Table.configure({
+          resizable: true,
+        }),
+        TableRow,
+        TableHeader,
+        CustomTableCell
     ],
     onUpdate: () => {
         emits('update:modelValue', editor.value.getHTML())
     }
+})
+onBeforeUnmount(() => {
+  editor.value.destroy();
 })
 
 // Provide editor instance to buttons
@@ -40,147 +76,149 @@ watch(props.modelValue, (value) => {
 
 <template>
   <div class="editor-toolbar d-flex flex-wrap" v-if="editor">
-    <rich-editor-group multiple>
-      <rich-editor-button
+    <RichEditorGroup multiple>
+      <RichEditorButton
         @click="editor.chain().focus().toggleBold().run()"
         name="bold"
         icon="format-bold"
       />
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().toggleItalic().run()" 
         name="italic" 
         icon="format-italic" 
       />
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().toggleStrike().run()" 
         name="strike" 
         icon="format-strikethrough" 
       />
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().unsetAllMarks().run()" 
         icon="format-clear" 
       />
-    </rich-editor-group>
+    </RichEditorGroup>
 
-    <rich-editor-group>
-      <rich-editor-button 
+    <RichEditorGroup>
+      <RichEditorButton 
         @click="editor.chain().focus().clearNodes().run()"
         icon="format-letter-case"
       />
-    </rich-editor-group>
+    </RichEditorGroup>
 
-    <rich-editor-group>
-      <rich-editor-button 
+    <RichEditorGroup>
+      <RichEditorButton 
         @click="editor.chain().focus().setParagraph().run()"  
         name="paragraph"
         icon="format-paragraph"
       />
 
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
         :active="editor.isActive('heading', { level: 1 })"
         icon="format-header-1"
       />
 
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
         :active="editor.isActive('heading', { level: 2 })"
         icon="format-header-2"
       />
 
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
         :active="editor.isActive('heading', { level: 3 })"
         icon="format-header-3"
       />
 
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().toggleHeading({ level: 4 }).run()"
         :active="editor.isActive('heading', { level: 4 })"
         icon="format-header-4"
       />
 
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().toggleHeading({ level: 5 }).run()"
         :active="editor.isActive('heading', { level: 5 })"
         icon="format-header-5"
       />
       
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().toggleHeading({ level: 6 }).run()"
         :active="editor.isActive('heading', { level: 6 })"
         icon="format-header-6"
       />
-    </rich-editor-group>
+    </RichEditorGroup>
 
-    <rich-editor-group>
-      <rich-editor-button 
+    <RichEditorGroup>
+      <RichEditorButton 
         @click="editor.chain().focus().toggleBulletList().run()"
         name="bulletList"
         icon="format-list-bulleted"
       />
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().toggleOrderedList().run()"
         name="orderedList"
         icon="format-list-numbered"
       />
-    </rich-editor-group>
+    </RichEditorGroup>
 
-    <rich-editor-group>
-      <rich-editor-button 
+    <RichEditorGroup>
+      <RichEditorButton 
         @click="editor.chain().focus().toggleCode().run()"
         :disabled="!editor.can().chain().focus().toggleCode().run()" 
         name="code" 
         icon="code-json" 
       />
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().toggleCodeBlock().run()"
         :disabled="!editor.can().chain().focus().toggleCodeBlock().run()"
         name="codeBlock" 
         icon="code-tags" 
       />
-    </rich-editor-group>
+    </RichEditorGroup>
 
-    <rich-editor-group multiple>
-      <rich-editor-button 
+    <RichEditorGroup multiple>
+      <RichEditorButton 
         @click="editor.chain().focus().toggleBlockquote().run()"
         :disabled="!editor.can().chain().focus().toggleBlockquote().run()"
         name="blockquote" 
         icon="format-quote-close" 
       />
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().setHorizontalRule().run()"
         icon="minus" 
       />
-    </rich-editor-group>
+    </RichEditorGroup>
 
-    <rich-editor-group>
-      <rich-editor-button 
+    <RichEditorGroup>
+      <RichEditorButton 
         @click="editor.chain().focus().undo().run()"
         :disabled="!editor.can().chain().focus().undo().run()"
         icon="undo" 
       />
-      <rich-editor-button 
+      <RichEditorButton 
         @click="editor.chain().focus().redo().run()"
         :disabled="!editor.can().chain().focus().redo().run()"
         icon="redo" 
       />
-    </rich-editor-group>
+    </RichEditorGroup>
 
-    <rich-editor-group>
-      <rich-editor-button
-        @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-        icon="table"
-      />
-    </rich-editor-group>
+    <RichEditorTable />
   </div>
 
-  <editor-content :editor="editor" class="mt-2" />
+  <EditorContent :editor="editor" class="mt-2" />
 </template>
 
 <style lang="scss">
 .editor-toolbar {
   gap: 10px;
+}
+.sub-menu {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-width: 401px;
 }
 .tiptap {
   outline: none;
