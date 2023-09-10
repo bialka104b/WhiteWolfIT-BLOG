@@ -389,3 +389,15 @@ footer {
 .square:hover::before {
   width: 100%;
 }
+
+.lings:hover {
+  .yes {
+    background-color: #4267B2;
+    border-radius: 10px;
+  }
+}
+ .yes {
+  background-color: grey;
+  transition: 0.7s;
+  border-radius: 7px;
+ }

@@ -78,8 +78,13 @@
           <img src="../images/Icon/communication-1809935_640.png" alt="" class="bas" />Social Media
         </h2>
 
-        <div class="content">
-          <img src="../images/Icon/facebook.png" alt="facebook icon" /><a href="/">Facebook</a>
+        <div class="lings content">
+          <a @mouseout="removeshowfacebook()" @mouseover="changeshowfacebook()">
+            <img class="yes" src="../images/Icon/facebook.svg" alt="facebook icon" />
+            <span v-if="showfacebook">
+              Facebook
+            </span>
+          </a>
         </div>
 
         <div class="content">
@@ -118,3 +123,24 @@
     </footer>
   </main>
 </template>
+
+<script>
+    import { ref, defineComponent } from 'vue'
+  export default defineComponent({
+    setup(){
+      const showfacebook=ref(false)
+      function changeshowfacebook(){
+        showfacebook.value=true
+      }
+
+      function removeshowfacebook(){
+        showfacebook.value=false
+      }
+      return{
+        showfacebook,
+        changeshowfacebook,
+        removeshowfacebook
+      }
+    }
+  })
+</script>
