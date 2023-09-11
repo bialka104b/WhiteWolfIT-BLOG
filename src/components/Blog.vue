@@ -10,16 +10,11 @@ export default {
     item: Object
   },
   setup() {
-    // const clients = {
-    //   articleId: articlesId()
-    // }
-    const route = useRoute() // Użyj useRoute() do uzyskania dostępu do $route
+    const route = useRoute()
 
-    // Odczytaj parametr 'someProp' z route.params
     const vlr = route.params.someProp
     const obj = ref([])
 
-    // ... reszta kodu komponentu ...
     const showPublicArticles = async () => {
       try {
         const res = await articlesId(vlr)
