@@ -1,38 +1,49 @@
 <script>
-import { ref, defineComponent } from 'vue'
-// import { NewsModule } from '~/api-client/src/index.js'
+import { ref, onMounted, getCurrentInstance } from 'vue'
 import { articles } from '@/services/blogService.js'
 
-export default defineComponent({
+const shortParagraph = (paragraph) => {
+  const words = paragraph.split(' ')
+  return words.length > 10 ? words.slice(0, 10).join(' ') + '...' : paragraph
+}
+
+export default {
   name: 'Footer',
+  props: {
+    item: Object
+  },
   setup() {
     const clients = {
       article: articles()
     }
-    return {
-      clients
+    const obj = ref([])
+
+    const showPublicArticles = async () => {
+      try {
+        const res = await clients.article
+        obj.value = res.data
+      } catch (error) {
+        console.log(error)
+      }
     }
-  },
-  async created() {
-    await this.articleOnclick()
-    // const res = await fetch('http://localhost:5000/api/articles')
-    // const json = await res.json()
-    // console.log(json)
-  },
-  methods: {
-    articleOnclick() {
-      this.clients.article
-        .then((res) => {
-          console.log('działa')
-          console.log(res.data)
-          // tu możesz zrobic cos z tymi danymi
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+
+    onMounted(() => {
+      showPublicArticles()
+    })
+
+    const { proxy } = getCurrentInstance()
+    console.log(proxy)
+    const handleClick = (id) => {
+      proxy.$router.push(`/blog/${id}`)
+    }
+
+    return {
+      obj,
+      shortParagraph,
+      handleClick
     }
   }
-})
+}
 </script>
 
 <template>
@@ -49,13 +60,25 @@ export default defineComponent({
       </div>
       <div class="footer-top__news">
         <h1>Aktualności</h1>
-        <p>W trakcie budowy...</p>
+        <ul>
+          <li v-for="item in obj.slice(0, 3)" :key="item.id" @click="handleClick(item._id)">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png"
+              alt=""
+              class="footer-top__news__img"
+            />
+            <div>
+              <h2>{{ item.title }}</h2>
+              <p>{{ shortParagraph(item.description) }}</p>
+            </div>
+          </li>
+        </ul>
       </div>
       <div class="footer-top__socials">
-        <div class="footer-top__social"></div>
-        <div class="footer-top__social"></div>
-        <div class="footer-top__social"></div>
-        <div class="footer-top__social"></div>
+        <div class=""></div>
+        <div class=""></div>
+        <div class=""></div>
+        <div class=""></div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -68,3 +91,25 @@ export default defineComponent({
     </div>
   </footer>
 </template>
+
+<style>
+.footer-top__news ul {
+  padding: 10px;
+  list-style-type: none;
+}
+
+.footer-top__news ul li {
+  display: flex;
+  margin: 20px;
+  list-style-type: none;
+}
+
+.footer-top__news ul li:hover {
+  cursor: pointer;
+}
+
+.footer-top__news img {
+  height: 100px;
+  margin: 0 10px 0 0;
+}
+</style>

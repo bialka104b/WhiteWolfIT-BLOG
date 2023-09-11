@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useUserStore } from '@/stores/user.js';
+import { useUserStore } from '@/stores/user.js'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import HomeView from '@/views/HomeView.vue'
 
@@ -15,6 +15,16 @@ const router = createRouter({
           path: '',
           name: 'home',
           component: HomeView
+        },
+        {
+          path: '/blog',
+          name: 'blog',
+          component: () => import('@/layouts/DashboardLayout.vue')
+        },
+        {
+          path: '/blog/:someProp',
+          name: 'pageB',
+          component: () => import('@/components/Blog.vue')
         }
       ]
     },
@@ -49,10 +59,10 @@ const router = createRouter({
 })
 
 router.beforeResolve((to, from) => {
-  const { userLoggedIn } = useUserStore();
+  const { userLoggedIn } = useUserStore()
 
-  if(!userLoggedIn && to?.matched[0].name === 'layout-admin') {
-    return { name: 'home' };
+  if (!userLoggedIn && to?.matched[0].name === 'layout-admin') {
+    return { name: 'home' }
   }
 })
 
