@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { ref, defineComponent, onMounted } from 'vue'
+import { ref, defineComponent, onMounted, onUnmounted } from 'vue'
 
 export default defineComponent({
   name: 'Header',
@@ -50,8 +50,8 @@ export default defineComponent({
       // activeSlide.value = 'nowa wartość' // dodanie .value jest tutaj wymagane
     }
     // syntax dla vue3
-    mounted(() => {})
-    onMounted(() => { })
+    onMounted(() => {})
+    onUnmounted(() => {})
     // https://vuejs.org/api/composition-api-lifecycle.html haki cyklu zycia komponentu. 2 podstawowe najbardziej przydatne wypisałam
 
     return {
