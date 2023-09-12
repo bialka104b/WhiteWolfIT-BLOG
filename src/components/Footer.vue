@@ -1,11 +1,7 @@
 <script>
 import { ref, onMounted, getCurrentInstance } from 'vue'
 import { articles } from '@/services/blogService.js'
-
-const shortParagraph = (paragraph) => {
-  const words = paragraph.split(' ')
-  return words.length > 10 ? words.slice(0, 10).join(' ') + '...' : paragraph
-}
+import { useStore } from '@/stores/blog.js'
 
 export default {
   name: 'Footer',
@@ -13,6 +9,12 @@ export default {
     item: Object
   },
   setup() {
+    function reduceParagraph(description) {
+      const words = description.split(' ')
+      if (words.length <= 8) return description
+      const shortenedParagraph = words.slice(0, 8).join(' ') + '...'
+      return shortenedParagraph
+    }
     const clients = {
       article: articles()
     }
@@ -32,15 +34,22 @@ export default {
     })
 
     const { proxy } = getCurrentInstance()
-    console.log(proxy)
-    const handleClick = (id) => {
-      proxy.$router.push(`/blog/${id}`)
+    const store = useStore()
+
+    const handleClick = async (id) => {
+      try {
+        await store.fetchDataBlog(id)
+        proxy.$router.push(`/blog/${id}`)
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     return {
       obj,
-      shortParagraph,
-      handleClick
+      handleClick,
+      showPublicArticles,
+      reduceParagraph
     }
   }
 }
@@ -61,7 +70,7 @@ export default {
       <div class="footer-top__news">
         <h1>Aktualności</h1>
         <ul>
-          <li v-for="item in obj.slice(0, 3)" :key="item.id" @click="handleClick(item._id)">
+          <li v-for="item in obj" :key="item.id" @click="handleClick(item._id)">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png"
               alt=""
@@ -69,7 +78,7 @@ export default {
             />
             <div>
               <h2>{{ item.title }}</h2>
-              <p>{{ shortParagraph(item.description) }}</p>
+              <p>{{ reduceParagraph(item.description) }}</p>
             </div>
           </li>
         </ul>

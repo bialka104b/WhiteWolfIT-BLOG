@@ -19,12 +19,12 @@ const router = createRouter({
         {
           path: '/blog',
           name: 'blog',
-          component: () => import('@/layouts/DashboardLayout.vue')
+          component: () => import('@/layouts/Blog.vue')
         },
         {
           path: '/blog/:someProp',
-          name: 'pageB',
-          component: () => import('@/components/Blog.vue')
+          name: 'BlogId',
+          component: () => import('@/components/BlogId.vue')
         }
       ]
     },
