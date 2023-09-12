@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { ref, defineComponent } from 'vue'
+import { ref, defineComponent, onMounted } from 'vue'
 
 export default defineComponent({
   name: 'Header',
@@ -49,6 +49,10 @@ export default defineComponent({
       // jak uzyskać dostęp do zmiennej activeSlide?
       // activeSlide.value = 'nowa wartość' // dodanie .value jest tutaj wymagane
     }
+    // syntax dla vue3
+    mounted(() => {})
+    onMounted(() => { })
+    // https://vuejs.org/api/composition-api-lifecycle.html haki cyklu zycia komponentu. 2 podstawowe najbardziej przydatne wypisałam
 
     return {
       activeSlide,
@@ -56,11 +60,13 @@ export default defineComponent({
       przykladowaFunkcja
     }
   },
+  // syntax dla vue2, możecie z tego korzystać ale trzeba być świadomym że to nie jest Vue3
   async created() {
     // coś co chcesz wywołac na starcie
     await this.przykladowaFunkcja()
   },
-  mouted() { },// hak cyklu życia komponentu, odpalany w momencie renderowania naszego <template></template>
+  // syntax dla vue2
+  mouted() {}, // hak cyklu życia komponentu, odpalany w momencie renderowania naszego <template></template>
   methods: {
     // tu tez mozna deklarować funkcje, ale jest to syntax dla Vue2
     przykladowaFunkcja2() {}
