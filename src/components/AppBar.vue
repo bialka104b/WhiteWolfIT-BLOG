@@ -21,7 +21,12 @@ const nav = computed(() => {
     { text: 'Home', link: '/' },
     {
       text: 'Blog',
+      link: '/blog',
       items: [
+        {
+          text: 'Articles',
+          link: '/blog'
+        },
         {
           text: 'Article 1',
           link: '/blog/1'
