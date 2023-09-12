@@ -15,7 +15,6 @@
       </v-row>
     </v-carousel-item>
   </v-carousel>
-  <v-carousel-indicators v-model="activeSlide" :length="items.length"></v-carousel-indicators>
 </template>
 
 <script>
