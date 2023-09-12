@@ -3,12 +3,12 @@ import { ref } from 'vue';
 import { saveArticle as saveArticleReq } from '@/services/articleService';
 import RichEditor from '@/components/RichEditor/index.vue';
 
-const formData = ref({
-    title: 'q',
-    description: 'q',
-    content: 'q',
+const thumbnail = ref(null);
+const data = ref({
+    title: '',
+    description: '',
+    content: '',
     isPublic: true,
-    thumbnail: [],
     files: []
 });
 
@@ -35,8 +35,29 @@ const saveArticle = async () => {
     loading.value = true;
 
     try {
-        const { data } = saveArticleReq(formData.value);
-        console.log(data);
+        const formData = new FormData();
+        formData.append('thumbnail', thumbnail.value[0]);
+
+        for(const key in data.value) {
+            if(data.value.hasOwnProperty(key)) {
+                const value = data.value[key];
+
+                if (Array.isArray(value)) {
+                    for (let i = 0; i < value.length; i++) {
+                        formData.append(`${key}[${i}]`, value[i]);
+                    }
+                } else {
+                    switch(key) {
+                        case 'isPublic':
+                            formData.append(key, data.value.isPublic ? 1 : 0);
+                        default:
+                            formData.append(key, value);
+                    }
+                }
+            }
+        }
+
+        const response = await saveArticleReq(formData);
     } catch (err) {
         console.error('err', err);
     } finally {
@@ -48,7 +69,7 @@ const saveArticle = async () => {
 <template>
     <v-form>
         <v-text-field
-            v-model="formData.title"
+            v-model="data.title"
             :rules="titleRules"
             :counter="titleMaxLength"
             label="Title"
@@ -59,8 +80,8 @@ const saveArticle = async () => {
             required
         />
 
-        <v-text-field
-            v-model="formData.description"
+        <v-textarea
+            v-model="data.description"
             :rules="descRules"
             :counter="descMaxLength"
             label="Description"
@@ -69,28 +90,28 @@ const saveArticle = async () => {
             hide-details="auto"
             clearable
             required
+            no-resize
         />
 
         <v-checkbox
-            v-model="formData.isPublic"
+            v-model="data.isPublic"
             label="Public"
             density="comfortable"
         />
 
-        <!-- <v-file-input
-            v-model="formData.thumbnail"
+        <v-file-input
+            v-model="thumbnail"
             :rules="thumbnailRules"
             accept="image/png, image/jpeg"
             prepend-icon="mdi-camera"
             label="Thumbnail"
             variant="solo"
             density="compact"
-            hide-details="auto"
             clearable
             show-size
-        /> -->
+        />
 
-        <RichEditor v-model="formData.content" />
+        <RichEditor v-model="data.content" />
 
         <v-divider class="my-5" />
         

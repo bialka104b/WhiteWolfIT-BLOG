@@ -92,7 +92,7 @@ const toggleRail = () => {
 
     <v-main>
         <div class="pa-4">
-            <v-app-bar>
+            <v-app-bar flat border>
                 <v-btn icon @click="toggleRail">
                     <v-icon :icon="`mdi-chevron-${rail ? 'right' : 'left'}`"></v-icon>
                 </v-btn>

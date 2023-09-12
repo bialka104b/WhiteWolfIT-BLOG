@@ -5,6 +5,9 @@ import RichEditorGroup from '@/components/RichEditor/RichEditorGroup.vue';
 import RichEditorButton from '@/components/RichEditor/RichEditorButton.vue';
 import RichEditorTable from './partials/RichEditorTable.vue';
 
+import Text from '@tiptap/extension-text'
+import TextStyle from '@tiptap/extension-text-style'
+import { Color } from '@tiptap/extension-color'
 import StarterKit from '@tiptap/starter-kit'
 import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
@@ -50,7 +53,10 @@ const editor = useEditor({
         }),
         TableRow,
         TableHeader,
-        CustomTableCell
+        CustomTableCell,
+        Text,
+        TextStyle,
+        Color,
     ],
     onUpdate: () => {
         emits('update:modelValue', editor.value.getHTML())
@@ -77,6 +83,15 @@ watch(props.modelValue, (value) => {
 <template>
   <div class="editor-toolbar d-flex flex-wrap" v-if="editor">
     <RichEditorGroup multiple>
+      <RichEditorButton
+        @click="editor.chain().focus().toggleBold().run()"
+      >
+        <input
+          type="color"
+          @input="editor.chain().focus().setColor($event.target.value).run()"
+          :value="editor.getAttributes('textStyle').color || '#ffffff'"
+        >
+      </RichEditorButton>
       <RichEditorButton
         @click="editor.chain().focus().toggleBold().run()"
         name="bold"
@@ -222,6 +237,7 @@ watch(props.modelValue, (value) => {
 }
 .tiptap {
   outline: none;
+  max-height: 600px;
 
   > * + * {
     margin-top: 0.75em;

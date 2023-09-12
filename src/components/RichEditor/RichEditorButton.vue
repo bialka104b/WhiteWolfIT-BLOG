@@ -13,7 +13,7 @@ const props = defineProps(['name', 'icon', 'tooltip'])
         size="small"
         min-height="36"
     >
-        <v-icon :icon="`mdi-${props.icon || 'circle-small'}`" />
+        <v-icon v-if="props.icon" :icon="`mdi-${props.icon}`" />
 
         <v-tooltip
             v-if="tooltip"
