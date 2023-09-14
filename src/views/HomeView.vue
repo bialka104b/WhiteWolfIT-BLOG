@@ -6,8 +6,4 @@ import Main from '@/components/Main.vue'
 <template>
   <Header />
   <Main />
-  <Home />
-  <Carousel />
-  <WhatWeDo />
-  <Contact />
 </template>
