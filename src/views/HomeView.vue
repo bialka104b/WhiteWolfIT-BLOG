@@ -1,7 +1,7 @@
 <script setup>
 import Header from '@/components/Header.vue'
 import Main from '@/components/Main.vue'
-import Footer from '@/components/Footer.vue'
+import Contact from '@/components/Contact.vue'
 </script>
 
 <template>
@@ -130,11 +130,7 @@ import Footer from '@/components/Footer.vue'
   </main>
   <Header />
   <Main />
-  <Home />
-  <Carousel />
-  <WhatWeDo />
   <Contact />
-  <Footer />
 </template>
 
 <script>

@@ -23,6 +23,7 @@
   color: map-get($map: $baseColors, $key: hardPink);
   font-weight: bold;
   margin-top: 25px;
+  margin: 10px;
   padding: 10px 20px;
   border: 1px solid map-get($map: $baseColors, $key: hardPink);
   border-radius: 20px;

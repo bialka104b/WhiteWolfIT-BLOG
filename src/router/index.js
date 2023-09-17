@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useUserStore } from '@/stores/user.js';
+import { useUserStore } from '@/stores/user.js'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import HomeView from '@/views/HomeView.vue'
 
@@ -12,16 +12,26 @@ const router = createRouter({
       component: DefaultLayout,
       children: [
         {
-          path: '',
+          path: '/',
           name: 'home',
           component: HomeView
+        },
+        {
+          path: '/blog',
+          name: 'blog',
+          component: () => import('@/layouts/Blog.vue')
+        },
+        {
+          path: '/blog/:someProp',
+          name: 'BlogId',
+          component: () => import('@/components/BlogId.vue')
         }
       ]
     },
     {
       path: '/admin',
       name: 'layout-admin',
-      component: () => import('@/layouts/DashboardLayout.vue'),
+      component: () => import('@/layouts/AdminLayout.vue'),
       children: [
         {
           path: '',
@@ -36,12 +46,26 @@ const router = createRouter({
         {
           path: 'notes',
           name: 'admin-notes',
-          component: () => import('@/views/admin/notes.vue')
+          component: () => import('@/views/admin/notes.vue'),
         },
         {
           path: 'articles',
-          name: 'admin-articles',
-          component: () => import('@/views/admin/articles.vue')
+          children: [{
+            path: '',
+            name: 'admin-articles',
+            component: () => import('@/views/admin/article/articleList.vue'),
+            meta: {
+              title: 'All articles',
+              linkOfNewObject: 'admin-articles-new'
+            },
+          }, {
+            path: 'new',
+            name: 'admin-articles-new',
+            component: () => import('@/views/admin/article/articleForm.vue'),
+            meta: {
+              title: 'Create new article'
+            },
+          }]
         }
       ]
     }
@@ -49,10 +73,10 @@ const router = createRouter({
 })
 
 router.beforeResolve((to, from) => {
-  const { userLoggedIn } = useUserStore();
+  const { userLoggedIn } = useUserStore()
 
-  if(!userLoggedIn && to?.matched[0].name === 'layout-admin') {
-    return { name: 'home' };
+  if (!userLoggedIn && to?.matched[0].name === 'layout-admin') {
+    return { name: 'home' }
   }
 })
 
