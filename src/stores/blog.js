@@ -1,4 +1,3 @@
-// store.js
 import { defineStore } from 'pinia'
 import { articlesId } from '@/services/blogService.js'
 

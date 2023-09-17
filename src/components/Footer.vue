@@ -24,6 +24,7 @@ export default {
       try {
         const res = await clients.article
         obj.value = res.data
+        console.log(res)
       } catch (error) {
         console.log(error)
       }
