@@ -30,17 +30,17 @@ export default defineComponent({
         title: 'Tworzymy oprogramowanie',
         description:
           'Zajmujemy się tworzeniem aplikacji internetowych, wizytówek, strony internetowych, portale internetowe i inne.',
-        image: 'src/assets/background1.jpg'
+        image: '../assets/background1.jpg'
       },
       {
         title: 'Zapytaj o wycenę',
         description: 'Tworzymy projekty na życzenie klientów.',
-        image: 'src/assets/background2.jpg'
+        image: '../assets/background2.jpg'
       },
       {
         title: 'Napisz do nas!',
         description: 'A my zajmiemy się tworzeniem i wdrażaniem',
-        image: 'src/assets/background3.jpg'
+        image: '../assets/background3.jpg'
       }
     ])
     //syntax dla Vue3
