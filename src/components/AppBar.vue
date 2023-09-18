@@ -57,7 +57,7 @@ watch(nightMode, (val) => {
 <template>
   <v-app-bar scroll-behavior="hide" :height="80" flat>
     <v-container class="d-flex align-center h-100 py-2">
-      <img alt="logo" src="src/assets/logo-black-short.png" class="w-auto h-75 d-block" />
+      <img alt="logo" src="../assets/logo-black-short.png" class="w-auto h-75 d-block" />
 
       <v-spacer />
 

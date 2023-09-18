@@ -15,15 +15,15 @@
     <h1 class="main__title main__section__technologies__title">Technologie z których korzystamy</h1>
     <v-carousel :show-arrows="false" class="main__carousel__custom">
       <v-carousel-item>
-        <img class="main__carousel__img" src="src/assets/js.png" alt="" />
+        <img class="main__carousel__img" src="../assets/js.png" alt="" />
       </v-carousel-item>
 
       <v-carousel-item>
-        <img class="main__carousel__img" src="src/assets/node-js.png" alt="" />
+        <img class="main__carousel__img" src="../assets/node-js.png" alt="" />
       </v-carousel-item>
 
       <v-carousel-item
-        ><img class="main__carousel__img" src="src/assets/mongodb.png" alt="" />
+        ><img class="main__carousel__img" src="../assets/mongodb.png" alt="" />
       </v-carousel-item>
     </v-carousel>
   </div>

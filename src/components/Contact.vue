@@ -57,7 +57,8 @@ export default defineComponent({
   <section class="section4">
     <div class="wrapper">
       <h2>
-        <img src="../images/logo/Short white@iwhitewolf.png" alt="commpany logo" />
+        ../images/logo/Shortwhite@iwhitewolf.png"
+        <img src="../images/logo/Shortwhite@iwhitewolf.png" alt="commpany logo" />
         <p>Address</p>
       </h2>
       <div class="content">
