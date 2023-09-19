@@ -1,99 +1,111 @@
 <script setup>
-import { ref } from 'vue';
-import { toast } from 'vue3-toastify';
-import { getArticles } from '@/services/articleService.js';
-import DeleteButton from '../../../components/DeleteButton.vue';
+import { ref } from "vue";
+import { toast } from "vue3-toastify";
+import { getArticles } from "@/services/articleService.js";
+import DeleteButton from "../../../components/DeleteButton.vue";
 
 const loading = ref(false);
 const items = ref([]);
+const props = ref("dddd");
 
 const loadArticles = async () => {
-    loading.value = true;
+	loading.value = true;
 
-    try {
-        const { data } = await getArticles(true);
-        items.value = data.reverse();
-    } catch(err) {
-        toast.error("An error occurred while loading data")
-    } finally {
-        loading.value = false;
-    }
-}
+	try {
+		const { data } = await getArticles(true);
+		items.value = data.reverse();
+	} catch (err) {
+		toast.error("An error occurred while loading data");
+	} finally {
+		loading.value = false;
+	}
+};
 loadArticles();
 </script>
 
 <template>
-    <v-container fluid>
-        <span class="text-h6 mb-5 d-block">Found {{ items.length }} items!</span>
+	<v-container fluid>
+		<span class="text-h6 mb-5 d-block"
+			>Found {{ items.length }} items!</span
+		>
 
-        <div v-if="loading">
-            <v-progress-circular indeterminate />
-            <span class="text-body-1 ml-5">Loading data...</span>
-        </div>
-        <v-row v-else align-content="stretch">
-            <v-col v-for="(item, index) in items" :key="index" cols="12" sm="6" md="4" lg="3">
-                <v-card class="d-flex flex-column h-100">
-                    <template v-if="item.thumbnail[0]">
-                        <v-img
-                            :src="`http://localhost:5000/${item.thumbnail[0].url}`"
-                            :alt="item.thumbnail[0].url"
-                            height="128"
-                            contain
-                            class="mt-4"
-                        />
+		<div v-if="loading">
+			<v-progress-circular indeterminate />
+			<span class="text-body-1 ml-5">Loading data...</span>
+		</div>
+		<v-row v-else align-content="stretch">
+			<v-col
+				v-for="(item, index) in items"
+				:key="index"
+				cols="12"
+				sm="6"
+				md="4"
+				lg="3"
+			>
+				<v-card class="d-flex flex-column h-100">
+					<template v-if="item.thumbnail[0]">
+						<v-img
+							:src="`https://api.iwhitewolf.it/${item.thumbnail[0].url}`"
+							:alt="item.thumbnail[0].url"
+							height="128"
+							contain
+							class="mt-4"
+						/>
 
-                        <v-divider class="mt-4"></v-divider>
-                    </template>
+						<v-divider class="mt-4"></v-divider>
+					</template>
 
-                    <v-card-item>
-                        <v-chip
-                            size="small"
-                            v-bind="{
-                                ...(item.isPublic ? {
-                                    color: 'green',
-                                    prependIcon: 'mdi-check'
-                                } : {
-                                    color: 'red',
-                                    prependIcon: 'mdi-close'
-                                })
-                            }"
-                        >
-                            {{ item.isPublic ? 'Public' : 'Private' }}
-                        </v-chip>
+					<v-card-item>
+						<v-chip
+							size="small"
+							v-bind="{
+								...(item.isPublic
+									? {
+											color: 'green',
+											prependIcon: 'mdi-check'
+									  }
+									: {
+											color: 'red',
+											prependIcon: 'mdi-close'
+									  })
+							}"
+						>
+							{{ item.isPublic ? "Public" : "Private" }}
+						</v-chip>
 
-                        <v-card-title>
-                            {{ item.title }}
-                        </v-card-title>
+						<v-card-title>
+							{{ item.title }}
+						</v-card-title>
 
-                        <v-card-subtitle class="text-medium-emphasis">
-                            {{ new Date(item.createdAt).toLocaleString() }}
-                        </v-card-subtitle>
-                    </v-card-item>
+						<v-card-subtitle class="text-medium-emphasis">
+							{{ new Date(item.createdAt).toLocaleString() }}
+						</v-card-subtitle>
+					</v-card-item>
 
-                    <v-card-text class="text-truncate">
-                        {{ item.description }}
-                    </v-card-text>
+					<v-card-text class="text-truncate">
+						{{ item.description }}
+					</v-card-text>
 
-                    <v-card-actions class="px-4 mt-auto">
-                        <v-btn
-                            color="primary"
-                            variant="tonal"
-                            size="small"
-                            v-bind="props"
-                            :to="`/admin/articles/${item._id}`"
-                        >
-                            <v-icon icon="mdi-pen"></v-icon>
-                        </v-btn>
+					<v-card-actions class="px-4 mt-auto">
+						<v-btn
+							color="primary"
+							variant="tonal"
+							size="small"
+							v-bind:props="props"
+							:to="`/admin/articles/${item._id}`"
+						>
+							<v-icon icon="mdi-pen"></v-icon>
+						</v-btn>
 
-                        <DeleteButton
-                            v-bind="props"
-                            size="small"
-                            :id="item._id"
-                            @afterDelete="loadArticles"
-                        />
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-        </v-row>
-    </v-container>
+						<DeleteButton
+							v-bind:props="props"
+							size="small"
+							:id="item._id"
+							@afterDelete="loadArticles"
+						/>
+					</v-card-actions>
+				</v-card>
+			</v-col>
+		</v-row>
+	</v-container>
 </template>
