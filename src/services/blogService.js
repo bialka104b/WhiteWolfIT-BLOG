@@ -5,7 +5,7 @@ export async function articles() {
   return response
 }
 
-export async function articlesId(id) {
-  const response = await axios.get(`/articles/${id}`)
+export async function articlesId(id, admin = false) {
+  const response = await axios.get(`/articles${!admin || '/admin'}/${id}`)
   return response
 }

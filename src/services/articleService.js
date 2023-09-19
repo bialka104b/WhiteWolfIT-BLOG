@@ -16,3 +16,15 @@ export async function saveArticle(formData) {
 
     return response;
 }
+
+export async function editArticle(formData, id) {
+    const response = await axios.put(`/articles/${id}`, formData);
+
+    return response;
+}
+
+export async function removeArticle(id) {
+    const response = await axios.delete(`/articles/${id}`);
+
+    return response;
+}

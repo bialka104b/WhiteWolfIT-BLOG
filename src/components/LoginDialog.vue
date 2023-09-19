@@ -1,11 +1,13 @@
 <script setup>
 import { ref, defineEmits } from 'vue'
 import { toast } from 'vue3-toastify'
+import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user'
 
 const emit = defineEmits(['onSuccess'])
 const formValid = ref(false)
 const loading = ref(false)
+const router = useRouter()
 
 const email = ref('')
 const emailRules = [
@@ -36,6 +38,7 @@ const login = async () => {
   await userStore.login(email.value, password.value)
 
   if (userStore.userLoggedIn) {
+    await router.push({ name: 'admin' });
     toast.success('You have logged into your account')
     emit('onSuccess')
   }

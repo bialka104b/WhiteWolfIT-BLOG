@@ -49,7 +49,7 @@ export const useUserStore = defineStore('user', () => {
       const token = data?.accessToken; 
       
       if (token) {
-        cookies.set('accessToken', token, '15m');
+        cookies.set('accessToken', token, '15min');
         userLoggedIn.value = true;
       }
     } catch(err) {

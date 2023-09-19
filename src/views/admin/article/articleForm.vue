@@ -1,16 +1,40 @@
 <script setup>
-import { ref } from 'vue';
-import { saveArticle as saveArticleReq } from '@/services/articleService';
+import { ref, onBeforeMount } from 'vue';
+import { useRoute } from 'vue-router';
+import { toast } from 'vue3-toastify';
+import { saveArticle as saveArticleReq, editArticle } from '@/services/articleService';
+import { articlesId } from '@/services/blogService';
 import RichEditor from '@/components/RichEditor/index.vue';
+import DeleteButton from '../../../components/DeleteButton.vue';
+import router from '../../../router';
 
 const thumbnail = ref(null);
 const data = ref({
     title: '',
     description: '',
-    content: '',
     isPublic: true,
+    content: '',
     files: []
 });
+
+// check if it's edit routing
+const route = useRoute();
+const editMode = ref(route.params.id);
+onBeforeMount(async () => {
+    const { id } = route.params;
+    if(id) {
+        try {
+            const response = await articlesId(id, true);
+            data.value = response.data;
+        } catch {
+            await router.push({ name: 'admin-articles'})
+            toast.error('An error occured [articleForm]')
+        }
+    }
+})
+
+// rules and validation
+const formValid = ref(false);
 
 const titleMaxLength = 64;
 const titleRules = [
@@ -32,11 +56,15 @@ const thumbnailRules = [
 // api logic
 const loading = ref(false);
 const saveArticle = async () => {
+    if(!formValid.value)
+        return
+
     loading.value = true;
 
     try {
         const formData = new FormData();
-        formData.append('thumbnail', thumbnail.value[0]);
+        if(thumbnail.value?.[0])
+            formData.append('thumbnail', thumbnail.value[0]);
 
         for(const key in data.value) {
             if(data.value.hasOwnProperty(key)) {
@@ -57,9 +85,19 @@ const saveArticle = async () => {
             }
         }
 
-        const response = await saveArticleReq(formData);
+        if(editMode.value)
+            await editArticle(data.value, route.params.id);
+        else
+            await saveArticleReq(formData);
+
+        await router.push({ name: 'admin-articles' })
+
+        if(editMode.value)
+            toast.success('Article updated.');
+        else
+            toast.success('Article has been added.')
     } catch (err) {
-        console.error('err', err);
+        toast.error('An error occured!')
     } finally {
         loading.value = false;
     }
@@ -67,67 +105,90 @@ const saveArticle = async () => {
 </script>
 
 <template>
-    <v-form>
-        <v-text-field
-            v-model="data.title"
-            :rules="titleRules"
-            :counter="titleMaxLength"
-            label="Title"
-            variant="solo"
-            density="compact"
-            hide-details="auto"
-            clearable
-            required
-        />
+    <v-form v-model="formValid" @submit.prevent="saveArticle">
+        <v-row no-gutters>
+            <v-col cols="12">
+                <v-text-field
+                    v-model="data.title"
+                    :rules="titleRules"
+                    :counter="titleMaxLength"
+                    label="Title *"
+                    variant="solo"
+                    density="compact"
+                    hide-details="auto"
+                    clearable
+                    required
+                />
+            </v-col>
 
-        <v-textarea
-            v-model="data.description"
-            :rules="descRules"
-            :counter="descMaxLength"
-            label="Description"
-            variant="solo"
-            density="compact"
-            hide-details="auto"
-            clearable
-            required
-            no-resize
-        />
+            <v-col cols="12">
+                <v-textarea
+                    v-model="data.description"
+                    :rules="descRules"
+                    :counter="descMaxLength"
+                    label="Description *"
+                    variant="solo"
+                    density="compact"
+                    hide-details="auto"
+                    clearable
+                    required
+                    no-resize
+                    class="mt-2"
+                />
+            </v-col>
 
-        <v-checkbox
-            v-model="data.isPublic"
-            label="Public"
-            density="comfortable"
-        />
+            <v-col cols="12">
+                <v-file-input
+                    v-if="!editMode"
+                    v-model="thumbnail"
+                    :rules="thumbnailRules"
+                    accept="image/png, image/jpeg"
+                    label="Thumbnail *"
+                    variant="solo"
+                    density="compact"
+                    clearable
+                    show-size
+                    class="mt-2"
+                />
+            </v-col>
 
-        <v-file-input
-            v-model="thumbnail"
-            :rules="thumbnailRules"
-            accept="image/png, image/jpeg"
-            prepend-icon="mdi-camera"
-            label="Thumbnail"
-            variant="solo"
-            density="compact"
-            clearable
-            show-size
-        />
-
-        <RichEditor v-model="data.content" />
-
-        <v-divider class="my-5" />
+            <v-col cols="12">
+                <RichEditor v-model="data.content" class="mt-2" />
+            </v-col>
+        </v-row>
         
-        <v-footer app height="96" class="d-flex align-center">
+        <v-footer app height="64" class="d-flex align-center flex-row">
+            <v-checkbox
+                v-model="data.isPublic"
+                :label="`Article is ${data.isPublic ? 'public' : 'private'}.`"
+                :color="data.isPublic ? 'green' : 'grey'"
+                hide-details
+                class="flex-0-0"
+            />
+
+            <v-divider vertical class="mx-5"></v-divider>
+
             <v-btn
                 flat
                 variant="tonal"
                 prepend-icon="mdi-check"
-                color="success"
-                class="mr-4"
-                @click="saveArticle"
                 :loading="loading"
                 :disabled="loading"
+                color="green"
+                type="submit"
             >
-                Save
+                {{ editMode ? 'Update article' : 'Save' }}
             </v-btn>
+
+            <DeleteButton
+                v-if="editMode"
+                class="ml-3"
+                prepend-icon="mdi-delete"
+                :id="route.params.id"
+                @after-delete="router.push({name: 'admin-articles'})"
+            >
+                Delete
+            </DeleteButton>
         </v-footer>
     </v-form>
 </template>

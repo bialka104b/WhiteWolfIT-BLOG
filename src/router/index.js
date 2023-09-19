@@ -65,6 +65,13 @@ const router = createRouter({
             meta: {
               title: 'Create new article'
             },
+          }, {
+            path: ':id',
+            name: 'admin-articles-edit',
+            component: () => import('@/views/admin/article/articleForm.vue'),
+            meta: {
+              title: 'Edit article'
+            },
           }]
         }
       ]
