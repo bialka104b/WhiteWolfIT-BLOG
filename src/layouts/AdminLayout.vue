@@ -23,21 +23,18 @@ const options = ref([
         icon: 'account-group-outline',
         title: 'Users',
         value: 'users',
-        count: 2,
         link: `${prefix}/users`
     },
     {
         icon: 'note-outline',
         title: 'Notes',
         value: 'notes',
-        count: 5,
         link: `${prefix}/notes`
     },
     {
         icon: 'file-document-outline',
         title: 'Articles',
         value: 'articles',
-        count: 45,
         link: `${prefix}/articles`
     },
     {
@@ -91,7 +88,7 @@ const toggleRail = () => {
     </v-navigation-drawer>
 
     <v-main>
-        <div class="pa-4">
+        <div class="pa-4 h-100">
             <v-app-bar flat border>
                 <v-btn icon @click="toggleRail">
                     <v-icon :icon="`mdi-chevron-${rail ? 'right' : 'left'}`"></v-icon>
