@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 import { getArticles } from '@/services/articleService.js';
-import DeleteButton from '../../../components/DeleteButton.vue';
+import DeleteButton from '../../../components/articles/DeleteButton.vue';
+import ThumbnailButton from '../../../components/articles/ThumbnailButton.vue';
 
 const loading = ref(false);
 const items = ref([]);
@@ -20,6 +21,10 @@ const loadArticles = async () => {
     }
 }
 loadArticles();
+
+const getThumbnail = (item) => {
+    return item.thumbnail[item.thumbnail.length - 1]?.url ?? '';
+}
 </script>
 
 <template>
@@ -35,7 +40,7 @@ loadArticles();
                 <v-card class="d-flex flex-column h-100">
                     <template v-if="item.thumbnail[0]">
                         <v-img
-                            :src="`http://localhost:5000/${item.thumbnail[0].url}`"
+                            :src="`http://localhost:5000/${getThumbnail(item)}`"
                             :alt="item.thumbnail[0].url"
                             height="128"
                             contain
@@ -86,10 +91,15 @@ loadArticles();
                         </v-btn>
 
                         <DeleteButton
-                            v-bind="props"
                             size="small"
                             :id="item._id"
                             @afterDelete="loadArticles"
+                        />
+
+                        <ThumbnailButton
+                            size="small"
+                            :id="item._id"
+                            @afterSave="loadArticles"
                         />
                     </v-card-actions>
                 </v-card>

@@ -28,3 +28,13 @@ export async function removeArticle(id) {
 
     return response;
 }
+
+export async function saveThumbnail(formData, id) {
+    const response = await axios.post(`/articles/${id}/thumbnail`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+
+    return response;
+}

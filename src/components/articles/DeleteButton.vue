@@ -63,6 +63,7 @@ const confirmDeletion = async () => {
                 <v-btn
                     size="small"
                     @click="model = false"
+                    :disabled="loading"
                 >
                     Cancel
                 </v-btn>
@@ -72,6 +73,8 @@ const confirmDeletion = async () => {
                     size="small"
                     class="ml-3"
                     @click="confirmDeletion"
+                    :loading="loading"
+                    :disabled="loading"
                 >
                     Discard
                 </v-btn>

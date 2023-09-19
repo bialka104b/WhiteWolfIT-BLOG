@@ -5,10 +5,10 @@ import { toast } from 'vue3-toastify';
 import { saveArticle as saveArticleReq, editArticle } from '@/services/articleService';
 import { articlesId } from '@/services/blogService';
 import RichEditor from '@/components/RichEditor/index.vue';
-import DeleteButton from '../../../components/DeleteButton.vue';
+import DeleteButton from '../../../components/articles/DeleteButton.vue';
+import ThumbnailButton from '@/components/articles/ThumbnailButton.vue';
 import router from '../../../router';
 
-const thumbnail = ref(null);
 const data = ref({
     title: '',
     description: '',
@@ -48,6 +48,7 @@ const descRules = [
     v => (v && v.length <= descMaxLength) || `Description must be less than ${descMaxLength} characters`
 ]
 
+const thumbnail = ref(null);
 const thumbnailRules = [
     v => !!v || 'Thumbnail i required',
     v => (v && v.length && v[0].size < 2000000) || 'Thumbnail size should be less than 2 MB'
@@ -101,6 +102,11 @@ const saveArticle = async () => {
     } finally {
         loading.value = false;
     }
+}
+
+// save thumbnail
+const saveThumbnail = async () => {
+    console.log(thumbnail.value);
 }
 </script>
 
@@ -180,15 +186,25 @@ const saveArticle = async () => {
                 {{ editMode ? 'Update article' : 'Save' }}
             </v-btn>
 
-            <DeleteButton
-                v-if="editMode"
-                class="ml-3"
-                prepend-icon="mdi-delete"
-                :id="route.params.id"
-                @after-delete="router.push({name: 'admin-articles'})"
-            >
-                Delete
-            </DeleteButton>
+            <template v-if="editMode">
+                <DeleteButton
+                    class="ml-3"
+                    prepend-icon="mdi-delete"
+                    :id="route.params.id"
+                    @after-delete="router.push({name: 'admin-articles'})"
+                >
+                    Delete
+                </DeleteButton>
+
+                <v-divider vertical class="mx-5"></v-divider>
+
+                <ThumbnailButton
+                    prepend-icon="mdi-image"
+                    :id="route.params.id"
+                >
+                    Change thumbnail
+                </ThumbnailButton>
+            </template>
         </v-footer>
     </v-form>
 </template>
