@@ -24,7 +24,6 @@ export default {
       try {
         const res = await clients.article
         obj.value = res.data
-        console.log(res)
       } catch (error) {
         console.log(error)
       }
@@ -44,6 +43,10 @@ export default {
       } catch (error) {
         console.error(error)
       }
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Działa tylko w nowoczesnych przeglądarkach
+      })
     }
 
     return {
@@ -71,9 +74,13 @@ export default {
       <div class="footer-top__news">
         <h1>Aktualności</h1>
         <ul>
-          <li v-for="item in obj" :key="item.id" @click="handleClick(item._id)">
+          <li
+            v-for="item in obj.slice(obj.length - 3)"
+            :key="item.id"
+            @click="handleClick(item._id)"
+          >
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png"
+              :src="`http://localhost:5000/${item.thumbnail[0].url}`"
               alt=""
               class="footer-top__news__img"
             />
@@ -85,6 +92,7 @@ export default {
         </ul>
       </div>
       <div class="footer-top__socials">
+        <h1>Socjal</h1>
         <div class=""></div>
         <div class=""></div>
         <div class=""></div>

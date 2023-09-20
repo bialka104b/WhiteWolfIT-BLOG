@@ -46,26 +46,29 @@ const router = createRouter({
         {
           path: 'notes',
           name: 'admin-notes',
-          component: () => import('@/views/admin/notes.vue'),
+          component: () => import('@/views/admin/notes.vue')
         },
         {
           path: 'articles',
-          children: [{
-            path: '',
-            name: 'admin-articles',
-            component: () => import('@/views/admin/article/articleList.vue'),
-            meta: {
-              title: 'All articles',
-              linkOfNewObject: 'admin-articles-new'
+          children: [
+            {
+              path: '',
+              name: 'admin-articles',
+              component: () => import('@/views/admin/article/articleList.vue'),
+              meta: {
+                title: 'All articles',
+                linkOfNewObject: 'admin-articles-new'
+              }
             },
-          }, {
-            path: 'new',
-            name: 'admin-articles-new',
-            component: () => import('@/views/admin/article/articleForm.vue'),
-            meta: {
-              title: 'Create new article'
-            },
-          }]
+            {
+              path: 'new',
+              name: 'admin-articles-new',
+              component: () => import('@/views/admin/article/articleForm.vue'),
+              meta: {
+                title: 'Create new article'
+              }
+            }
+          ]
         }
       ]
     }

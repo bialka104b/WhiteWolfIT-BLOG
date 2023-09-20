@@ -1,29 +1,28 @@
 <template>
-  <div class="main__aboutMe">
+  <div class="main__aboutMe blogId">
     <h1 class="main__title">Blog</h1>
     <div class="blog__container" v-for="item in obj" :key="item.id">
-      <img
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png"
-        alt=""
-        class="blog__img"
+      <BlogArticles
+        :artilesTitle="item.title"
+        :artilesDescription="item.description"
+        :artilesTime="item.createdAt"
+        :articleThumbnail="item.thumbnail[0].url"
+        :articlesImg="item.images"
+        :articlesAuthor="item.author"
       />
-      <h2>{{ item.title }}</h2>
-      <p>{{ item.description }}</p>
-      <p class="blog__time">{{ item.createdAt }}</p>
     </div>
+
+    <!-- Dodaj komponent BlogId i przekaż do niego odpowiednie dane, jeśli to konieczne -->
   </div>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue'
-// import { useStore } from '@/stores/blog.js'
 import { articles } from '@/services/blogService.js'
+import BlogArticles from '@/components/BlogArticles.vue' // Import komponentu BlogId
 
 export default {
-  name: 'Footer',
-  props: {
-    item: Object
-  },
+  name: 'Blog',
   setup() {
     const clients = {
       article: articles()
@@ -44,9 +43,11 @@ export default {
     })
 
     return {
-      obj,
-      showPublicArticles
+      obj
     }
+  },
+  components: {
+    BlogArticles
   }
 }
 </script>

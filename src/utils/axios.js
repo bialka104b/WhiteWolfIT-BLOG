@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useCookies } from 'vue3-cookies'
 
 const instance = axios.create({
-  baseURL: 'http://localhost:5000/api'
+  baseURL: 'http://localhost:5000/v1'
 })
 
 instance.interceptors.request.use((config) => {

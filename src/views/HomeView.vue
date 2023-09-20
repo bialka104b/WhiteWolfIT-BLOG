@@ -7,8 +7,4 @@ import Contact from '@/components/Contact.vue'
 <template>
   <Header />
   <Main />
-<<<<<<< HEAD
-=======
-  <Contact />
->>>>>>> 459d182bd5813a46fb592011df7e5db37e8a2e2a
 </template>
