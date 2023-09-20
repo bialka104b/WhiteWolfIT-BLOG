@@ -51,26 +51,6 @@ export default class {
 
 	async addProduct(productCountRequest) {
 		try {
-			// this.client.interceptors.response.use(
-			// 	async (response) => {
-			// 		if (response.status === 401) {
-			// 			console.log("You are not authorized");
-			// 			return navigateTo("/login");
-			// 		} else {
-			// 			const response = await this.client.post(
-			// 				`/external/add_to_basket`,
-			// 				productCountRequest
-			// 			);
-			// 			return await Promise.resolve(response);
-			// 		}
-			// 	},
-			// 	(error) => {
-			// 		if (error.response && error.response.data) {
-			// 			return Promise.reject(error.response.data);
-			// 		}
-			// 		return Promise.reject(error.message);
-			// 	}
-			// );
 			const response = await this.client.post(
 				`/external/add_to_basket`,
 				productCountRequest
