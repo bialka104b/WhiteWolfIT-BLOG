@@ -1,19 +1,19 @@
-import axios from 'axios'
-import { useCookies } from 'vue3-cookies'
+import axios from "axios";
+import { useCookies } from "vue3-cookies";
 
 const instance = axios.create({
-  baseURL: 'http://localhost:5000/v1'
-})
+	baseURL: "https://api.iwhitewolf.it/v1"
+});
 
 instance.interceptors.request.use((config) => {
-  const { cookies } = useCookies()
-  const token = cookies.get('accessToken')
+	const { cookies } = useCookies();
+	const token = cookies.get("accessToken");
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
+	if (token) {
+		config.headers.Authorization = `Bearer ${token}`;
+	}
 
-  return config
-})
+	return config;
+});
 
-export default instance
+export default instance;

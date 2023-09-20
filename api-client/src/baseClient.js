@@ -1,14 +1,13 @@
 import axios from "axios";
 
-const BASE_URI = "http://localhost:5000/api";
-
+const BASE_URI = "https://api.iwhitewolf.it/v1/";
 
 export const createClient = (options = {}) => {
 	const baseOptions = {
 		baseURL: BASE_URI,
 		headers: {
-			"Content-Type": "application/json",
-		},
+			"Content-Type": "application/json"
+		}
 	};
 
 	const clientOptions = { ...baseOptions, ...options };
@@ -21,8 +20,8 @@ export const createAuthorizedClient = (token) => {
 	const options = {
 		headers: {
 			Accept: "application/json",
-			Authorization: token,
-		},
+			Authorization: token
+		}
 	};
 
 	return createClient(options);
