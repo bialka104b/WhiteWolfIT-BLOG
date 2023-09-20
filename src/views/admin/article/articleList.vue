@@ -1,15 +1,16 @@
 <script setup>
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import { toast } from 'vue3-toastify';
-import { getArticles } from '@/services/articleService.js';
+import { getArticles, changeToPrivate, changeToPublic } from '@/services/articleService.js';
 import DeleteButton from '../../../components/articles/DeleteButton.vue';
 import ThumbnailButton from '../../../components/articles/ThumbnailButton.vue';
 
 const loading = ref(false);
 const items = ref([]);
 
-const loadArticles = async () => {
-    loading.value = true;
+const loadArticles = async (soft = false) => {
+    if(!soft)
+        loading.value = true;
 
     try {
         const { data } = await getArticles(true);
@@ -24,6 +25,23 @@ loadArticles();
 
 const getThumbnail = (item) => {
     return item.thumbnail[item.thumbnail.length - 1]?.url ?? '';
+}
+
+const loadingVisibility = ref(false);
+const changeVisibility = async (id, val) => {
+    if(loadingVisibility.value)
+        return;
+
+    loadingVisibility.value = true;
+
+    try {
+        val ? await changeToPrivate(id) : await changeToPublic(id);       
+    } catch(err) {
+        toast.error('An error occured! [articleList]');
+    } finally {
+        loadingVisibility.value = false;
+        loadArticles(true);
+    }
 }
 </script>
 
@@ -52,7 +70,9 @@ const getThumbnail = (item) => {
 
                     <v-card-item>
                         <v-chip
+                            style="cursor: pointer;"
                             size="small"
+                            @click="changeVisibility(item._id, item.isPublic)"
                             v-bind="{
                                 ...(item.isPublic ? {
                                     color: 'green',
@@ -66,7 +86,7 @@ const getThumbnail = (item) => {
                             {{ item.isPublic ? 'Public' : 'Private' }}
                         </v-chip>
 
-                        <v-card-title>
+                        <v-card-title class="mt-1">
                             {{ item.title }}
                         </v-card-title>
 

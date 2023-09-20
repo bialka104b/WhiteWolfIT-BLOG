@@ -16,6 +16,7 @@ const data = ref({
     content: '',
     files: []
 });
+const loading = ref(false);
 
 // check if it's edit routing
 const route = useRoute();
@@ -24,11 +25,14 @@ onBeforeMount(async () => {
     const { id } = route.params;
     if(id) {
         try {
+            loading.value = true;
             const response = await articlesId(id, true);
             data.value = response.data;
         } catch {
             await router.push({ name: 'admin-articles'})
             toast.error('An error occured [articleForm]')
+        } finally {
+            loading.value = false;
         }
     }
 })
@@ -55,7 +59,6 @@ const thumbnailRules = [
 ]
 
 // api logic
-const loading = ref(false);
 const saveArticle = async () => {
     if(!formValid.value)
         return
@@ -111,7 +114,11 @@ const saveThumbnail = async () => {
 </script>
 
 <template>
-    <v-form v-model="formValid" @submit.prevent="saveArticle">
+    <div v-if="loading && editMode">
+        <v-progress-circular indeterminate />
+        <span class="text-body-1 ml-5">Loading data...</span>
+    </div>
+    <v-form v-else v-model="formValid" @submit.prevent="saveArticle">
         <v-row no-gutters>
             <v-col cols="12">
                 <v-text-field

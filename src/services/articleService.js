@@ -38,3 +38,13 @@ export async function saveThumbnail(formData, id) {
 
     return response;
 }
+
+export async function changeToPrivate(id) {
+    const response = await axios.put(`/articles/${id}/private`)
+    return response;
+}
+
+export async function changeToPublic(id) {
+    const response = await axios.put(`/articles/${id}/public`)
+    return response;
+}
