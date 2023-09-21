@@ -16,47 +16,59 @@ const headers = [
 const items = ref([]);
 
 const loadArticles = async (soft = false) => {
-    if(!soft)
-        loading.value = true;
+	if (!soft) loading.value = true
 
 	try {
-		const { data } = await getArticles(true);
-		items.value = data.reverse();
+		const { data } = await getArticles(true)
+		items.value = data.reverse()
 	} catch (err) {
 		console.error(err);
 	} finally {
-		loading.value = false;
+		loading.value = false
 	}
-};
-loadArticles();
+}
+loadArticles()
 
 const getThumbnail = (item) => {
-    return item.thumbnail[item.thumbnail.length - 1]?.url ?? '';
+	return item.thumbnail[item.thumbnail.length - 1]?.url ?? ''
 }
 
-const loadingVisibility = ref(false);
+const loadingVisibility = ref(false)
 const changeVisibility = async (id, val) => {
-    if(loadingVisibility.value)
-        return;
+	if (loadingVisibility.value) return
 
-    loadingVisibility.value = true;
+	loadingVisibility.value = true
 
-    try {
-        val ? await changeToPrivate(id) : await changeToPublic(id);       
-    } catch(err) {
-        toast.error('An error occured! [articleList]');
-    } finally {
-        loadingVisibility.value = false;
-        loadArticles(true);
-    }
+	try {
+		val ? await changeToPrivate(id) : await changeToPublic(id)
+	} catch (err) {
+		toast.error('An error occured! [articleList]')
+	} finally {
+		loadingVisibility.value = false
+		loadArticles(true)
+	}
 }
 </script>
 
 <template>
+	<v-data-table :loading="loading" :headers="headers" :items="items">
+		<template v-slot:item.description="{ item }">
+			<span class="text-truncate">{{ item.raw.description }}</span>
+		</template>
+
+		<template v-slot:item.isPublic="{ item }">
+			<v-icon v-if="item.raw.isPublic" color="success" icon="mdi-check" />
+			<v-icon v-else="item.raw.isPublic" color="error" icon="mdi-close" />
+		</template>
+
+		<template v-slot:item.createdAt="{ item }">
+			<span class="text-truncate">{{
+				new Date(item.raw.createdAt).toLocaleString().slice(0, -3)
+			}}</span>
+		</template>
+	</v-data-table>
 	<v-container fluid>
-		<span class="text-h6 mb-5 d-block"
-			>Found {{ items.length }} items!</span
-		>
+		<span class="text-h6 mb-5 d-block">Found {{ items.length }} items!</span>
 
 		<div v-if="loading">
 			<v-progress-circular indeterminate />

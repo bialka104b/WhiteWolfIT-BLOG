@@ -1,7 +1,13 @@
 import axios from "@/utils/axios";
+import { isTemplateNode } from "@vue/compiler-core";
 
 export async function getArticles(admin = false) {
-	const path = `/articles${admin ? "/admin/all" : ""}`;
+	let path = "";
+	if (admin) {
+		path = "/articles/admin/all";
+	} else {
+		path = "/articles";
+	}
 	const response = await axios.get(path);
 
 	return response;
