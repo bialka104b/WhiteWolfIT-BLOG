@@ -186,6 +186,18 @@ const saveThumbnail = async () => {
 
 			<v-divider vertical class="mx-5"></v-divider>
 
+			<v-btn
+                flat
+                variant="tonal"
+                prepend-icon="mdi-check"
+                :loading="loading"
+                :disabled="loading"
+                color="green"
+                type="submit"
+            >
+                {{ editMode ? 'Update article' : 'Save' }}
+            </v-btn>
+
 			<template v-if="editMode">
 				<DeleteButton
 					class="ml-3"
