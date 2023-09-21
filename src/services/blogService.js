@@ -6,6 +6,6 @@ export async function articles() {
 }
 
 export async function articlesId(id, admin = false) {
-	const response = await axios.get(`/articles${!admin || "/admin"}/${id}`);
+	const response = await axios.get(`/articles/${id}`);
 	return response;
 }
