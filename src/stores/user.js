@@ -1,6 +1,7 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { toast } from "vue3-toastify";
 import { useCookies } from "vue3-cookies";
+import { useRouter } from 'vue-router';
 import { defineStore } from "pinia";
 import {
 	login as loginReq,
@@ -10,6 +11,7 @@ import {
 
 export const useUserStore = defineStore("user", () => {
 	const { cookies } = useCookies();
+	const router = useRouter();
 
 	// State
 	const userLoggedIn = ref(cookies.isKey("accessToken"));
@@ -37,13 +39,14 @@ export const useUserStore = defineStore("user", () => {
 		}
 	}
 
-	async function logout(silent = false) {
+	async function logout(silent) {
 		try {
 			await logoutReq();
 
 			cookies.remove("accessToken");
 			userLoggedIn.value = false;
 
+			await router.push({ name: 'home' });
 			if (!silent) toast.success("You have been logged out.");
 		} catch (err) {
 			const message = err?.response?.data?.message;
@@ -53,7 +56,7 @@ export const useUserStore = defineStore("user", () => {
 		}
 	}
 
-	async function refresh() {
+	async function refresh(unathorized) {
 		try {
 			const { data } = await refreshReq();
 			const token = data?.accessToken;
@@ -63,7 +66,10 @@ export const useUserStore = defineStore("user", () => {
 				userLoggedIn.value = true;
 			}
 		} catch (err) {
-			logout(true);
+			console.log('error refresh');
+			await logout(true);
+			if(unathorized)
+				toast.error("Session expired! You have been logged out.")
 		}
 	}
 
