@@ -1,5 +1,5 @@
 <script setup>
-import { inject } from 'vue'
+import { inject, defineProps } from 'vue'
 
 const editor = inject('editor')
 const props = defineProps(['name', 'icon', 'tooltip'])

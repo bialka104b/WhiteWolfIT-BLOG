@@ -1,5 +1,5 @@
 <script setup>
-import { ref, useAttrs, defineProps } from "vue";
+import { ref, useAttrs, defineProps, defineEmits } from "vue";
 import { removeArticle } from "@/services/articleService.js";
 import { toast } from "vue3-toastify";
 
