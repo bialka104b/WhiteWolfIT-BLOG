@@ -12,11 +12,14 @@
   <Baton :text="'jbdfaho hnio'" colors="red" />
 </template>
 
+
+
+
 <script>
+import Header from "@/components/Header.vue";
+import Main from "@/components/Main.vue";
+import Contact from "@/components/Contact.vue";
     import Baton from '@/components/CustomButtons.vue'
-    import Header from '@/components/Header.vue'
-    import Main from '@/components/Main.vue'
-    import Contact from '@/components/Contact.vue'
     import { ref, defineComponent } from 'vue'
   export default defineComponent({
     components:{

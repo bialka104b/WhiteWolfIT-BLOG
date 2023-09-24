@@ -1,133 +1,219 @@
 <script setup>
-import { ref } from 'vue';
-import { saveArticle as saveArticleReq } from '@/services/articleService';
-import RichEditor from '@/components/RichEditor/index.vue';
+import { ref, onBeforeMount } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
+import {
+	saveArticle as saveArticleReq,
+	editArticle
+} from "@/services/articleService";
+import { articlesId } from "@/services/blogService";
+import RichEditor from "@/components/RichEditor/index.vue";
+import DeleteButton from "../../../components/articles/DeleteButton.vue";
+import ThumbnailButton from "@/components/articles/ThumbnailButton.vue";
+// import router from '../../../router';
 
-const thumbnail = ref(null);
 const data = ref({
-    title: '',
-    description: '',
-    content: '',
-    isPublic: true,
-    files: []
+	title: "",
+	description: "",
+	isPublic: true,
+	content: "",
+	files: []
 });
+const loading = ref(false);
+
+// check if it's edit routing
+const router = useRouter();
+const route = useRoute();
+const editMode = ref(route.params.id);
+onBeforeMount(async () => {
+    const { id } = route.params;
+    if(id) {
+        try {
+            loading.value = true;
+            const response = await articlesId(id, true);
+            data.value = response.data;
+        } catch {
+            await router.push({ name: 'admin-articles'})
+            toast.error('An error occured [articleForm]')
+        } finally {
+            loading.value = false;
+        }
+    }
+})
+
+// rules and validation
+const formValid = ref(false);
 
 const titleMaxLength = 64;
 const titleRules = [
-    v => !!v || 'Title is required',
-    v => (v && v.length <= titleMaxLength) || `Title must be less than ${titleMaxLength} characters`
-]
+	(v) => !!v || "Title is required",
+	(v) =>
+		(v && v.length <= titleMaxLength) ||
+		`Title must be less than ${titleMaxLength} characters`
+];
 
 const descMaxLength = 256;
 const descRules = [
-    v => !!v || 'Description is required',
-    v => (v && v.length <= descMaxLength) || `Description must be less than ${descMaxLength} characters`
-]
+	(v) => !!v || "Description is required",
+	(v) =>
+		(v && v.length <= descMaxLength) ||
+		`Description must be less than ${descMaxLength} characters`
+];
 
+const thumbnail = ref(null);
 const thumbnailRules = [
-    v => !!v || 'Thumbnail i required',
-    v => (v && v.length && v[0].size < 2000000) || 'Thumbnail size should be less than 2 MB'
-]
+	(v) => !!v || "Thumbnail i required",
+	(v) =>
+		(v && v.length && v[0].size < 2000000) ||
+		"Thumbnail size should be less than 2 MB"
+];
 
 // api logic
-const loading = ref(false);
 const saveArticle = async () => {
-    loading.value = true;
+	if (!formValid.value) return;
 
-    try {
-        const formData = new FormData();
-        formData.append('thumbnail', thumbnail.value[0]);
+	loading.value = true;
 
-        for(const key in data.value) {
-            if(data.value.hasOwnProperty(key)) {
-                const value = data.value[key];
+	try {
+		const formData = new FormData();
+		if (thumbnail.value?.[0])
+			formData.append("thumbnail", thumbnail.value[0]);
 
-                if (Array.isArray(value)) {
-                    for (let i = 0; i < value.length; i++) {
-                        formData.append(`${key}[${i}]`, value[i]);
-                    }
-                } else {
-                    switch(key) {
-                        case 'isPublic':
-                            formData.append(key, data.value.isPublic ? 1 : 0);
-                        default:
-                            formData.append(key, value);
-                    }
-                }
-            }
-        }
+		for (const key in data.value) {
+			if (data.value.hasOwnProperty(key)) {
+				const value = data.value[key];
 
-        const response = await saveArticleReq(formData);
-    } catch (err) {
-        console.error('err', err);
-    } finally {
-        loading.value = false;
-    }
-}
+				if (Array.isArray(value)) {
+					for (let i = 0; i < value.length; i++) {
+						formData.append(`${key}[${i}]`, value[i]);
+					}
+				} else {
+					switch (key) {
+						case "isPublic":
+							formData.append(key, data.value.isPublic ? 1 : 0);
+						default:
+							formData.append(key, value);
+					}
+				}
+			}
+		}
+
+		if (editMode.value) await editArticle(data.value, route.params.id);
+		else await saveArticleReq(formData);
+
+		await router.push({ name: "admin-articles" });
+
+		if (editMode.value) toast.success("Article updated.");
+		else toast.success("Article has been added.");
+	} catch (err) {
+		toast.error("An error occured!");
+	} finally {
+		loading.value = false;
+	}
+};
+
+// save thumbnail
+const saveThumbnail = async () => {
+	console.log(thumbnail.value);
+};
 </script>
 
 <template>
-    <v-form>
-        <v-text-field
-            v-model="data.title"
-            :rules="titleRules"
-            :counter="titleMaxLength"
-            label="Title"
-            variant="solo"
-            density="compact"
-            hide-details="auto"
-            clearable
-            required
-        />
+    <div v-if="loading && editMode">
+        <v-progress-circular indeterminate />
+        <span class="text-body-1 ml-5">Loading data...</span>
+    </div>
+    <v-form v-else v-model="formValid" @submit.prevent="saveArticle">
+        <v-row no-gutters>
+            <v-col cols="12">
+                <v-text-field
+                    v-model="data.title"
+                    :rules="titleRules"
+                    :counter="titleMaxLength"
+                    label="Title *"
+                    variant="solo"
+                    density="compact"
+                    hide-details="auto"
+                    clearable
+                    required
+                />
+            </v-col>
 
-        <v-textarea
-            v-model="data.description"
-            :rules="descRules"
-            :counter="descMaxLength"
-            label="Description"
-            variant="solo"
-            density="compact"
-            hide-details="auto"
-            clearable
-            required
-            no-resize
-        />
+			<v-col cols="12">
+				<v-textarea
+					v-model="data.description"
+					:rules="descRules"
+					:counter="descMaxLength"
+					label="Description *"
+					variant="solo"
+					density="compact"
+					hide-details="auto"
+					clearable
+					required
+					no-resize
+					class="mt-2"
+				/>
+			</v-col>
 
-        <v-checkbox
-            v-model="data.isPublic"
-            label="Public"
-            density="comfortable"
-        />
+			<v-col cols="12">
+				<v-file-input
+					v-if="!editMode"
+					v-model="thumbnail"
+					:rules="thumbnailRules"
+					accept="image/png, image/jpeg"
+					label="Thumbnail *"
+					variant="solo"
+					density="compact"
+					clearable
+					show-size
+					class="mt-2"
+				/>
+			</v-col>
 
-        <v-file-input
-            v-model="thumbnail"
-            :rules="thumbnailRules"
-            accept="image/png, image/jpeg"
-            prepend-icon="mdi-camera"
-            label="Thumbnail"
-            variant="solo"
-            density="compact"
-            clearable
-            show-size
-        />
+			<v-col cols="12">
+				<RichEditor v-model="data.content" class="mt-2" />
+			</v-col>
+		</v-row>
 
-        <RichEditor v-model="data.content" />
+		<v-footer app height="64" class="d-flex align-center flex-row">
+			<v-checkbox
+				v-model="data.isPublic"
+				:label="`Article is ${data.isPublic ? 'public' : 'private'}.`"
+				:color="data.isPublic ? 'green' : 'grey'"
+				hide-details
+				class="flex-0-0"
+			/>
 
-        <v-divider class="my-5" />
-        
-        <v-footer app height="96" class="d-flex align-center">
-            <v-btn
+			<v-divider vertical class="mx-5"></v-divider>
+
+			<v-btn
                 flat
                 variant="tonal"
                 prepend-icon="mdi-check"
-                color="success"
-                class="mr-4"
-                @click="saveArticle"
                 :loading="loading"
                 :disabled="loading"
+                color="green"
+                type="submit"
             >
-                Save
+                {{ editMode ? 'Update article' : 'Save' }}
             </v-btn>
-        </v-footer>
-    </v-form>
+
+			<template v-if="editMode">
+				<DeleteButton
+					class="ml-3"
+					prepend-icon="mdi-delete"
+					:id="route.params.id"
+					@after-delete="router.push({ name: 'admin-articles' })"
+				>
+					Delete
+				</DeleteButton>
+
+				<v-divider vertical class="mx-5"></v-divider>
+
+				<ThumbnailButton prepend-icon="mdi-image" :id="route.params.id">
+					Change thumbnail
+				</ThumbnailButton>
+			</template>
+		</v-footer>
+	</v-form>
 </template>
