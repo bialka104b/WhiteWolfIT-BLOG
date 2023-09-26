@@ -1,5 +1,5 @@
 <script setup>
-import { ref, useAttrs, defineEmits, defineProps } from "vue";
+import { ref, useAttrs, defineProps } from "vue";
 import { removeArticle } from "@/services/articleService.js";
 import { toast } from "vue3-toastify";
 
@@ -54,13 +54,17 @@ const confirmDeletion = async () => {
 			<v-divider class="mt-4 mb-3"></v-divider>
 
 			<v-card-actions class="mx-auto">
-				<v-btn size="small" @click="model = false"> Cancel </v-btn>
+				<v-btn size="small" @click="model = false" :disabled="loading">
+					Cancel
+				</v-btn>
 
 				<v-btn
 					variant="tonal"
 					size="small"
 					class="ml-3"
 					@click="confirmDeletion"
+					:loading="loading"
+					:disabled="loading"
 				>
 					Discard
 				</v-btn>

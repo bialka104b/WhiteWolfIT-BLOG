@@ -57,7 +57,7 @@ const nav = computed(() => {
 		},
 		{
 			text: "Logout",
-			onClick: () => userStore.logout(),
+			onClick: async () => await userStore.logout(),
 			disabled: !userStore.userLoggedIn
 		}
 	].filter((el) => !el.disabled);

@@ -8,10 +8,10 @@ import {
 } from "@/services/articleService";
 import { articlesId } from "@/services/blogService";
 import RichEditor from "@/components/RichEditor/index.vue";
-import DeleteButton from "../../../components/DeleteButton.vue";
-// import router from '../../../router.js';
+import DeleteButton from "../../../components/articles/DeleteButton.vue";
+import ThumbnailButton from "@/components/articles/ThumbnailButton.vue";
+// import router from '../../../router';
 
-const thumbnail = ref(null);
 const data = ref({
 	title: "",
 	description: "",
@@ -19,23 +19,27 @@ const data = ref({
 	content: "",
 	files: []
 });
+const loading = ref(false);
 
 // check if it's edit routing
 const router = useRouter();
 const route = useRoute();
 const editMode = ref(route.params.id);
 onBeforeMount(async () => {
-	const { id } = route.params;
-	if (id) {
-		try {
-			const response = await articlesId(id, true);
-			data.value = response.data;
-		} catch {
-			await router.push({ name: "admin-articles" });
-			toast.error("An error occured [articleForm]");
-		}
-	}
-});
+    const { id } = route.params;
+    if(id) {
+        try {
+            loading.value = true;
+            const response = await articlesId(id, true);
+            data.value = response.data;
+        } catch {
+            await router.push({ name: 'admin-articles'})
+            toast.error('An error occured [articleForm]')
+        } finally {
+            loading.value = false;
+        }
+    }
+})
 
 // rules and validation
 const formValid = ref(false);
@@ -56,6 +60,7 @@ const descRules = [
 		`Description must be less than ${descMaxLength} characters`
 ];
 
+const thumbnail = ref(null);
 const thumbnailRules = [
 	(v) => !!v || "Thumbnail i required",
 	(v) =>
@@ -64,7 +69,6 @@ const thumbnailRules = [
 ];
 
 // api logic
-const loading = ref(false);
 const saveArticle = async () => {
 	if (!formValid.value) return;
 
@@ -107,24 +111,33 @@ const saveArticle = async () => {
 		loading.value = false;
 	}
 };
+
+// save thumbnail
+const saveThumbnail = async () => {
+	console.log(thumbnail.value);
+};
 </script>
 
 <template>
-	<v-form v-model="formValid" @submit.prevent="saveArticle">
-		<v-row no-gutters>
-			<v-col cols="12">
-				<v-text-field
-					v-model="data.title"
-					:rules="titleRules"
-					:counter="titleMaxLength"
-					label="Title *"
-					variant="solo"
-					density="compact"
-					hide-details="auto"
-					clearable
-					required
-				/>
-			</v-col>
+    <div v-if="loading && editMode">
+        <v-progress-circular indeterminate />
+        <span class="text-body-1 ml-5">Loading data...</span>
+    </div>
+    <v-form v-else v-model="formValid" @submit.prevent="saveArticle">
+        <v-row no-gutters>
+            <v-col cols="12">
+                <v-text-field
+                    v-model="data.title"
+                    :rules="titleRules"
+                    :counter="titleMaxLength"
+                    label="Title *"
+                    variant="solo"
+                    density="compact"
+                    hide-details="auto"
+                    clearable
+                    required
+                />
+            </v-col>
 
 			<v-col cols="12">
 				<v-textarea
@@ -174,26 +187,33 @@ const saveArticle = async () => {
 			<v-divider vertical class="mx-5"></v-divider>
 
 			<v-btn
-				flat
-				variant="tonal"
-				prepend-icon="mdi-check"
-				:loading="loading"
-				:disabled="loading"
-				color="green"
-				type="submit"
-			>
-				{{ editMode ? "Update article" : "Save" }}
-			</v-btn>
+                flat
+                variant="tonal"
+                prepend-icon="mdi-check"
+                :loading="loading"
+                :disabled="loading"
+                color="green"
+                type="submit"
+            >
+                {{ editMode ? 'Update article' : 'Save' }}
+            </v-btn>
 
-			<DeleteButton
-				v-if="editMode"
-				class="ml-3"
-				prepend-icon="mdi-delete"
-				:id="route.params.id"
-				@after-delete="router.push({ name: 'admin-articles' })"
-			>
-				Delete
-			</DeleteButton>
+			<template v-if="editMode">
+				<DeleteButton
+					class="ml-3"
+					prepend-icon="mdi-delete"
+					:id="route.params.id"
+					@after-delete="router.push({ name: 'admin-articles' })"
+				>
+					Delete
+				</DeleteButton>
+
+				<v-divider vertical class="mx-5"></v-divider>
+
+				<ThumbnailButton prepend-icon="mdi-image" :id="route.params.id">
+					Change thumbnail
+				</ThumbnailButton>
+			</template>
 		</v-footer>
 	</v-form>
 </template>
