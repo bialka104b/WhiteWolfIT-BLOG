@@ -15,12 +15,14 @@ export default {
 		const obj = ref({});
 
 		const showPublicArticles = async (id) => {
-			try {
-				console.log(id, "id")
-				const res = await articlesId(id);
-				obj.value = res.data;
-			} catch (error) {
-				console.log(error);
+			if (id) {
+				try {
+					console.log(id, "id");
+					const res = await articlesId(id);
+					obj.value = res.data;
+				} catch (error) {
+					console.log(error);
+				}
 			}
 		};
 		function getFormattedDate(date) {
