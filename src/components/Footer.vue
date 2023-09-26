@@ -1,7 +1,6 @@
 <script>
 import { ref, onMounted, getCurrentInstance } from "vue";
 import { articles } from "@/services/blogService.js";
-import { useStore } from "@/stores/blog.js";
 
 export default {
 	name: "Footer",
@@ -34,15 +33,13 @@ export default {
 		});
 
 		const { proxy } = getCurrentInstance();
-		const store = useStore();
 
 		const handleClick = async (id) => {
-			try {
-				await store.fetchDataBlog(id);
-				proxy.$router.push(`/blog/${id}`);
-			} catch (error) {
-				console.error(error);
-			}
+			proxy.$router.push({ name: "blogId", params: { id } });
+			window.scrollTo({
+				top: 0,
+				behavior: "smooth"
+			});
 		};
 
 		return {
@@ -76,7 +73,9 @@ export default {
 						@click="handleClick(item._id)"
 					>
 						<img
-							src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png"
+							:src="`https://api.iwhitewolf.it/${
+								item.thumbnail[item.thumbnail.length - 1].url
+							}`"
 							alt=""
 							class="footer-top__news__img"
 						/>
@@ -88,6 +87,7 @@ export default {
 				</ul>
 			</div>
 			<div class="footer-top__socials">
+				<h1>Socjal</h1>
 				<div class=""></div>
 				<div class=""></div>
 				<div class=""></div>
@@ -96,7 +96,7 @@ export default {
 		</div>
 		<div class="footer-bottom">
 			<div class="footer-bottom__logo">
-				<img src="../assets/logo-color.png" />
+				<img src="src/assets/logo-color.png" alt="" />
 			</div>
 			<div class="footer-bottom__info">
 				<p>&copy; 2023 IWhiteWolf.IT - Wszelkie prawa zastrzeżone.</p>
@@ -123,6 +123,7 @@ export default {
 
 .footer-top__news img {
 	height: 100px;
+	width: 100px;
 	margin: 0 10px 0 0;
 }
 </style>

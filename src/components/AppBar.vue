@@ -1,10 +1,11 @@
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, onMounted } from "vue";
 import { useTheme } from "vuetify";
 import { useUserStore } from "@/stores/user";
 import NavItems from "@/components/NavItems.vue";
 import NavDrawer from "@/components/NavDrawer.vue";
 import LoginDialog from "@/components/LoginDialog.vue";
+import { articles } from "@/services/blogService.js";
 
 // Login dialog management
 const loginDialog = ref(false);
@@ -14,8 +15,24 @@ const openLoginDialog = () => {
 	loginDialog.value = true;
 };
 
+const obj = ref([]);
+
+const showPublicArticles = async () => {
+	try {
+		const res = await articles();
+		obj.value = res.data;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+onMounted(() => {
+	showPublicArticles();
+});
+
 // Navigation & main drawer
 const drawer = ref(false);
+
 const nav = computed(() => {
 	return [
 		{ text: "Home", link: "/" },
@@ -24,20 +41,15 @@ const nav = computed(() => {
 			link: "/blog",
 			items: [
 				{
-					text: "Articles",
+					text: "Blog",
 					link: "/blog"
 				},
-				{
-					text: "Article 1",
-					link: "/blog/1"
-				},
-				{
-					text: "Article 2",
-					link: "/blog/2"
-				}
+				...obj.value.map((article) => ({
+					text: article.title,
+					link: `/blog/${article._id}`
+				}))
 			]
 		},
-		{ text: "Calculator", link: "/calculator" },
 		{
 			text: "Sign in",
 			onClick: openLoginDialog,
