@@ -1,5 +1,5 @@
 <template>
-	<div class="main__aboutMe blogId">
+	<div class="main__aboutMe blogId" id="BlogArticles">
 		<div class="blogId__container">
 			<img
 				:src="`https://api.iwhitewolf.it/${articleThumbnail}`"

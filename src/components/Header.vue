@@ -1,25 +1,27 @@
 <template>
-	<v-carousel
-		height="75vh"
-		v-model="activeSlide"
-		hide-delimiters
-		:show-arrows="false"
-	>
-		<v-carousel-item v-for="(item, index) in items" :key="index">
-			<v-row
-				justify="center"
-				class="fill-height header__custom__carousel"
-				:style="{ backgroundImage: `url('${item.image}')` }"
-			>
-				<v-col cols="10" md="5" align="center">
-					<h1 class="header__title">{{ item.title }}</h1>
-					<p class="header__paraf">{{ item.description }}</p>
-					<button class="header__btn">Zapytaj o wycenę</button>
-					<div class="header__arrows"></div>
-				</v-col>
-			</v-row>
-		</v-carousel-item>
-	</v-carousel>
+	<div id="Header">
+		<v-carousel
+			height="75vh"
+			v-model="activeSlide"
+			hide-delimiters
+			:show-arrows="false"
+		>
+			<v-carousel-item v-for="(item, index) in items" :key="index">
+				<v-row
+					justify="center"
+					class="fill-height header__custom__carousel"
+					:style="{ backgroundImage: `url('${item.image}')` }"
+				>
+					<v-col cols="10" md="5" align="center">
+						<h1 class="header__title">{{ item.title }}</h1>
+						<p class="header__paraf">{{ item.description }}</p>
+						<button class="header__btn">Zapytaj o wycenę</button>
+						<div class="header__arrows"></div>
+					</v-col>
+				</v-row>
+			</v-carousel-item>
+		</v-carousel>
+	</div>
 </template>
 
 <script>

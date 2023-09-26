@@ -1,21 +1,22 @@
 <script>
 import { ref, onMounted, getCurrentInstance, watch } from "vue";
 import { articlesId } from "@/services/blogService.js";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
 	name: "BlogId",
 	props: {
 		item: Object
 	},
-	setup() {
+	setup(props) {
 		const route = useRoute();
-		const { proxy } = getCurrentInstance();
+		const router = useRouter();
 
 		const obj = ref({});
 
 		const showPublicArticles = async (id) => {
 			try {
+				console.log(id, "id")
 				const res = await articlesId(id);
 				obj.value = res.data;
 			} catch (error) {
@@ -36,18 +37,15 @@ export default {
 		}
 
 		onMounted(() => {
-			showPublicArticles(currentEndpoint.value);
+			showPublicArticles(route.params.id);
 
 			watch(
 				() => route.path,
 				(newPath) => {
-					currentEndpoint.value = newPath.split("/").pop();
-					showPublicArticles(currentEndpoint.value);
+					showPublicArticles(route.params.id);
 				}
 			);
 		});
-
-		const currentEndpoint = ref(route.path.split("/").pop());
 
 		const showGallery = (img) => {
 			const element = img.srcElement;
@@ -87,14 +85,13 @@ export default {
 		};
 
 		const goBack = () => {
-			proxy.$router.back();
+			router.back();
 		};
 
 		return {
 			obj,
 			showPublicArticles,
 			showGallery,
-			currentEndpoint,
 			goBack,
 			getFormattedDate
 		};

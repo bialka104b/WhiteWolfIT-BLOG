@@ -1,6 +1,7 @@
 <script>
 import { ref, onMounted, getCurrentInstance } from "vue";
 import { articles } from "@/services/blogService.js";
+import { useRouter } from "vue-router";
 
 export default {
 	name: "Footer",
@@ -8,6 +9,7 @@ export default {
 		item: Object
 	},
 	setup() {
+		const router = useRouter();
 		function reduceParagraph(description) {
 			const words = description.split(" ");
 			if (words.length <= 8) return description;
@@ -32,10 +34,8 @@ export default {
 			showPublicArticles();
 		});
 
-		const { proxy } = getCurrentInstance();
-
 		const handleClick = async (id) => {
-			proxy.$router.push({ name: "blogId", params: { id } });
+			router.push({ name: "blogId", params: { id } });
 			window.scrollTo({
 				top: 0,
 				behavior: "smooth"
@@ -53,7 +53,7 @@ export default {
 </script>
 
 <template>
-	<footer>
+	<footer id="Footer">
 		<div class="footer-top">
 			<div class="footer-top__contact">
 				<h1>Dane Kontaktowe</h1>
@@ -67,23 +67,22 @@ export default {
 			<div class="footer-top__news">
 				<h1>Aktualności</h1>
 				<ul>
-					<li
-						v-for="item in obj"
-						:key="item.id"
-						@click="handleClick(item._id)"
-					>
-						<img
-							:src="`https://api.iwhitewolf.it/${
-								item.thumbnail[item.thumbnail.length - 1].url
-							}`"
-							alt=""
-							class="footer-top__news__img"
-						/>
-						<div>
-							<h2>{{ item.title }}</h2>
-							<p>{{ reduceParagraph(item.description) }}</p>
-						</div>
-					</li>
+					<template v-for="item in obj" :key="item._id">
+						<li @click="handleClick(item._id)">
+							<img
+								:src="`https://api.iwhitewolf.it/${
+									item.thumbnail[item.thumbnail.length - 1]
+										.url
+								}`"
+								alt=""
+								class="footer-top__news__img"
+							/>
+							<div>
+								<h2>{{ item.title }}</h2>
+								<p>{{ reduceParagraph(item.description) }}</p>
+							</div>
+						</li>
+					</template>
 				</ul>
 			</div>
 			<div class="footer-top__socials">

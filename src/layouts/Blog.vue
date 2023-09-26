@@ -23,6 +23,7 @@
 import { ref, onMounted, getCurrentInstance } from "vue";
 import { articles } from "../services/blogService.js";
 import BlogArticles from "../components/BlogArticles.vue";
+import { useRouter } from "vue-router";
 
 export default {
 	name: "Blog",
@@ -30,6 +31,7 @@ export default {
 		BlogArticles
 	},
 	setup() {
+		const router = useRouter();
 		const clients = {
 			article: articles()
 		};
@@ -47,10 +49,9 @@ export default {
 		onMounted(() => {
 			showPublicArticles();
 		});
-		const { proxy } = getCurrentInstance();
 
 		const handleClick = async (id) => {
-			proxy.$router.push({ name: "blogId", params: { id } });
+			router.push({ name: "blogId", params: { id } });
 			window.scrollTo({
 				top: 0,
 				behavior: "smooth"
