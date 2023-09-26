@@ -22,9 +22,10 @@ const router = createRouter({
 					component: () => import("@/layouts/Blog.vue")
 				},
 				{
-					path: "/blog/:someProp",
-					name: "BlogId",
-					component: () => import("@/components/BlogId.vue")
+					path: "/blog/:id",
+					name: "blogId",
+					component: import("@/components/BlogId.vue"),
+					props: true
 				}
 			]
 		},
@@ -90,7 +91,7 @@ const router = createRouter({
 	]
 });
 
-router.beforeResolve((to, from) => {
+router.beforeResolve((to) => {
 	const { userLoggedIn } = useUserStore();
 
 	if (!userLoggedIn && to?.matched[0].name === "layout-admin") {

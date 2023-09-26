@@ -1,51 +1,29 @@
-<template>
-	<div class="main__aboutMe blogId">
-		<div class="blogId__container">
-			<img
-				:src="`http://localhost:5000/${blogThumbnail}`"
-				:alt="blogTitle"
-			/>
-			<h2 class="main__small-title">{{ blogTitle }}</h2>
-		</div>
-		<p class="main__paraf">{{ blogDescription }}</p>
-		<ul>
-			<li
-				v-for="item in blogImg"
-				:key="item._id"
-				@click="showGallery($event)"
-			>
-				<img
-					class="blogId__imgs"
-					:src="`http://localhost:5000/${item.url}`"
-					alt=""
-				/>
-			</li>
-		</ul>
-		<p class="blogId__info">
-			{{ `${blogAuthor.firstName} ${blogAuthor.lastName}` }}
-		</p>
-		<p class="blogId__info">{{ time }}</p>
-		<button class="main__btn blogId__btn" @click="goBack()">Powrót</button>
-	</div>
-</template>
-
 <script>
-import { computed, onMounted } from "vue";
-import { useStore } from "@/stores/blog.js";
+import { ref, onMounted, getCurrentInstance, watch } from "vue";
+import { articlesId } from "@/services/blogService.js";
+import { useRoute } from "vue-router";
 
 export default {
+	name: "BlogId",
+	props: {
+		item: Object
+	},
 	setup() {
-		const store = useStore();
+		const route = useRoute();
+		const { proxy } = getCurrentInstance();
 
-		const blogTitle = computed(() => store.blogTitle);
-		const blogDescription = computed(() => store.blogDescription);
-		const blogThumbnail = computed(() => store.blogThumbnail);
-		const blogImg = computed(() => store.blogImg);
-		const blogAuthor = computed(() => store.blogAuthor);
+		const obj = ref({});
 
-		const time = computed(() => {
-			const blogDate = new Date(store.blogDate);
-
+		const showPublicArticles = async (id) => {
+			try {
+				const res = await articlesId(id);
+				obj.value = res.data;
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		function getFormattedDate(date) {
+			const time = new Date(date);
 			const options = {
 				year: "numeric",
 				month: "short",
@@ -54,9 +32,22 @@ export default {
 				minute: "2-digit",
 				second: "2-digit"
 			};
+			return time.toLocaleDateString("pl-PL", options);
+		}
 
-			return blogDate.toLocaleDateString("pl-PL", options);
+		onMounted(() => {
+			showPublicArticles(currentEndpoint.value);
+
+			watch(
+				() => route.path,
+				(newPath) => {
+					currentEndpoint.value = newPath.split("/").pop();
+					showPublicArticles(currentEndpoint.value);
+				}
+			);
 		});
+
+		const currentEndpoint = ref(route.path.split("/").pop());
 
 		const showGallery = (img) => {
 			const element = img.srcElement;
@@ -95,35 +86,52 @@ export default {
 			});
 		};
 
-		onMounted(async () => {
-			try {
-				await store.fetchBlogData();
-			} catch (error) {
-				console.error(
-					"Wystąpił błąd podczas pobierania danych:",
-					error
-				);
-			}
-		});
+		const goBack = () => {
+			proxy.$router.back();
+		};
 
 		return {
-			blogTitle,
-			blogDescription,
-			blogThumbnail,
-			blogImg,
-			blogAuthor,
-			time,
-			showGallery
+			obj,
+			showPublicArticles,
+			showGallery,
+			currentEndpoint,
+			goBack,
+			getFormattedDate
 		};
-	},
-	methods: {
-		goBack() {
-			this.$router.back();
-		}
 	}
 };
 </script>
-
+<template>
+	<div class="main__aboutMe blogId">
+		<div class="blogId__container">
+			<img
+				v-if="obj && obj.thumbnail && obj.thumbnail.length > 0"
+				:src="`https://api.iwhitewolf.it/${obj.thumbnail[0].url}`"
+				:alt="obj.title"
+			/>
+			<h2 class="main__small-title">{{ obj.title }}</h2>
+		</div>
+		<p class="main__paraf">{{ obj.description }}</p>
+		<ul>
+			<li
+				v-for="item in obj.images"
+				:key="item._id"
+				@click="showGallery($event)"
+			>
+				<img
+					class="blogId__imgs"
+					:src="`https://api.iwhitewolf.it/${item.url}`"
+					alt=""
+				/>
+			</li>
+		</ul>
+		<p class="blogId__info">
+			{{ `${obj.author?.firstName} ${obj.author?.lastName}` }}
+		</p>
+		<p class="blogId__info">{{ getFormattedDate(obj.createdAt) }}</p>
+		<button class="main__btn blogId__btn" @click="goBack()">Powrót</button>
+	</div>
+</template>
 <style>
 .blogId {
 	margin: 50px 20px;
@@ -164,5 +172,8 @@ export default {
 .blogId__info {
 	font-size: 0.8rem;
 	font-weight: bold;
+}
+.main__paraf {
+	margin: 20px 20px 20px 20px;
 }
 </style>

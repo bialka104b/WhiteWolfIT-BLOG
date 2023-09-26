@@ -1,7 +1,12 @@
 <template>
 	<div class="main__aboutMe blogId">
 		<h1 class="main__title">Blog</h1>
-		<div class="blog__container" v-for="item in obj" :key="item.id">
+		<div
+			class="blog__container"
+			@click="handleClick(item._id)"
+			v-for="item in obj"
+			:key="item.id"
+		>
 			<BlogArticles
 				:artilesTitle="item.title"
 				:artilesDescription="item.description"
@@ -11,18 +16,19 @@
 				:articlesAuthor="item.author"
 			/>
 		</div>
-
-		<!-- Dodaj komponent BlogId i przekaż do niego odpowiednie dane, jeśli to konieczne -->
 	</div>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
-import { articles } from "@/services/blogService.js";
-import BlogArticles from "@/components/BlogArticles.vue"; // Import komponentu BlogId
+import { ref, onMounted, getCurrentInstance } from "vue";
+import { articles } from "../services/blogService.js";
+import BlogArticles from "../components/BlogArticles.vue";
 
 export default {
 	name: "Blog",
+	components: {
+		BlogArticles
+	},
 	setup() {
 		const clients = {
 			article: articles()
@@ -41,11 +47,21 @@ export default {
 		onMounted(() => {
 			showPublicArticles();
 		});
+		const { proxy } = getCurrentInstance();
+
+		const handleClick = async (id) => {
+			proxy.$router.push({ name: "blogId", params: { id } });
+			window.scrollTo({
+				top: 0,
+				behavior: "smooth"
+			});
+		};
 
 		return {
 			obj,
 			BlogArticles,
-			showPublicArticles
+			showPublicArticles,
+			handleClick
 		};
 	}
 };
@@ -61,6 +77,7 @@ export default {
 
 .blog__container {
 	margin: 30px 0;
+	cursor: pointer;
 }
 .blog__time {
 	color: gray;
