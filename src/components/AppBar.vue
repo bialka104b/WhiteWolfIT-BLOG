@@ -43,10 +43,7 @@ const nav = computed(() => {
 			text: "Blog",
 			link: "/blog",
 			items: [
-				...obj.value.map((article) => ({
-					text: article.title,
-					link: `/blog/${article._id}`
-				}))
+				text: "damian"
 			]
 		},
 		{

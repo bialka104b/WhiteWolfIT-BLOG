@@ -17,36 +17,20 @@ const router = createRouter({
 					path: "",
 					name: "home",
 					component: HomeView
-				},
-				{
-					path: "/blog",
-					name: "blog",
-<<<<<<< HEAD
-					component: () => import("@/layouts/Blog.vue"),
-					children: [
-						{
-							path: "/:id",
-							name: "blogId",
-							component: import("@/components/BlogId.vue"),
-							props: true
-						}
-					]
-=======
-					component: Blog
-				},
-				{
-					path: "/blog/:id",
-					name: "blogId",
-					component: BlogId,
-					props: true
->>>>>>> add3d29af40433cf42f981b794dff80fe25000b8
 				}
-				// {
-				// 	path: "/blog/:id",
-				// 	name: "blogId",
-				// 	component: import("@/components/BlogId.vue"),
-				// 	props: true
-				// }
+			]
+		},
+		{
+			path: "/blog",
+			name: "blog",
+			component: () => import("@/layouts/Blog.vue"),
+			children: [
+				{
+					path: "",
+					name: "blogId",
+					component: import("@/components/BlogId.vue"),
+					props: true
+				}
 			]
 		},
 		{

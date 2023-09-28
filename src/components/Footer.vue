@@ -1,5 +1,5 @@
 <script>
-import { ref, onMounted, getCurrentInstance } from "vue";
+import { ref, onMounted } from "vue";
 import { articles } from "@/services/blogService.js";
 import { useRouter } from "vue-router";
 
