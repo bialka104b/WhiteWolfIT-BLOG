@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-	<nav>
+	<nav id="NavItems">
 		<v-btn
 			v-for="(item, index) in nav"
 			:key="index"

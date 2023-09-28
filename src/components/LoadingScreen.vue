@@ -1,5 +1,6 @@
 <template>
 	<div
+		id="LoadingScreen"
 		class="d-flex align-center justify-center flex-column w-100 h-100 text-center px-3"
 	>
 		<v-progress-circular indeterminate :size="36" :width="2" />

@@ -48,75 +48,79 @@ const login = async () => {
 </script>
 
 <template>
-	<v-dialog
-		transition="dialog-top-transition"
-		width="auto"
-		min-width="400"
-		max-width="100%"
-	>
-		<v-card elevation="0" class="pt-2 pb-4">
-			<v-card-text>
-				<v-form v-model="formValid">
-					<span class="text-body-2 d-block mb-1">Email address</span>
-					<v-text-field
-						v-model="email"
-						placeholder="Email"
-						type="email"
-						:rules="emailRules"
-						required
-						variant="outlined"
-						prepend-inner-icon="mdi-account-outline"
-						class="mb-3"
-						clearable
-						hide-details="auto"
-						density="compact"
-					/>
+	<div id="LoginDialog">
+		<v-dialog
+			transition="dialog-top-transition"
+			width="auto"
+			min-width="400"
+			max-width="100%"
+		>
+			<v-card elevation="0" class="pt-2 pb-4">
+				<v-card-text>
+					<v-form v-model="formValid">
+						<span class="text-body-2 d-block mb-1"
+							>Email address</span
+						>
+						<v-text-field
+							v-model="email"
+							placeholder="Email"
+							type="email"
+							:rules="emailRules"
+							required
+							variant="outlined"
+							prepend-inner-icon="mdi-account-outline"
+							class="mb-3"
+							clearable
+							hide-details="auto"
+							density="compact"
+						/>
 
-					<span class="text-body-2 d-block mb-1">Password</span>
-					<v-text-field
-						v-model="password"
-						placeholder="Password"
-						:type="passwordVisible ? 'text' : 'password'"
-						:rules="passwordRules"
-						required
-						variant="outlined"
-						prepend-inner-icon="mdi-lock-outline"
-						@keyup.enter="login"
-						hide-details="auto"
-						density="compact"
+						<span class="text-body-2 d-block mb-1">Password</span>
+						<v-text-field
+							v-model="password"
+							placeholder="Password"
+							:type="passwordVisible ? 'text' : 'password'"
+							:rules="passwordRules"
+							required
+							variant="outlined"
+							prepend-inner-icon="mdi-lock-outline"
+							@keyup.enter="login"
+							hide-details="auto"
+							density="compact"
+						>
+							<template #append-inner>
+								<v-btn
+									flat
+									size="small"
+									icon
+									@click="passwordVisible = !passwordVisible"
+								>
+									<v-icon
+										:icon="
+											passwordVisible
+												? 'mdi-eye-off-outline'
+												: 'mdi-eye-outline'
+										"
+									/>
+								</v-btn>
+							</template>
+						</v-text-field>
+					</v-form>
+
+					<v-btn
+						variant="tonal"
+						color="primary"
+						size="large"
+						class="mt-5"
+						block
+						@click="login"
+						:loading="loading"
+						:disabled="loading || !email || !password || !formValid"
 					>
-						<template #append-inner>
-							<v-btn
-								flat
-								size="small"
-								icon
-								@click="passwordVisible = !passwordVisible"
-							>
-								<v-icon
-									:icon="
-										passwordVisible
-											? 'mdi-eye-off-outline'
-											: 'mdi-eye-outline'
-									"
-								/>
-							</v-btn>
-						</template>
-					</v-text-field>
-				</v-form>
-
-				<v-btn
-					variant="tonal"
-					color="primary"
-					size="large"
-					class="mt-5"
-					block
-					@click="login"
-					:loading="loading"
-					:disabled="loading || !email || !password || !formValid"
-				>
-					Sign in
-				</v-btn>
-			</v-card-text>
-		</v-card>
-	</v-dialog>
+						Sign in
+					</v-btn>
+				</v-card-text>
+			</v-card>
+		</v-dialog>
+	</div>
 </template>

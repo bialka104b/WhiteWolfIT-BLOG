@@ -1,5 +1,5 @@
 <template>
-	<div class="main__aboutMe">
+	<div class="main__aboutMe" id="Main">
 		<h1 class="main__title">Producent oprogramowania</h1>
 		<button class="main__btn">Poznaj nas!</button>
 		<h2 class="main__small-title">Nasza Firma</h2>

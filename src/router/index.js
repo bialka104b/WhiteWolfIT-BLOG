@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/stores/user.js";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import HomeView from "@/views/HomeView.vue";
+import Blog from "@/layouts/Blog.vue";
+import BlogId from "@/components/BlogId.vue";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,13 +14,14 @@ const router = createRouter({
 			component: DefaultLayout,
 			children: [
 				{
-					path: "/",
+					path: "",
 					name: "home",
 					component: HomeView
 				},
 				{
 					path: "/blog",
 					name: "blog",
+<<<<<<< HEAD
 					component: () => import("@/layouts/Blog.vue"),
 					children: [
 						{
@@ -28,6 +31,15 @@ const router = createRouter({
 							props: true
 						}
 					]
+=======
+					component: Blog
+				},
+				{
+					path: "/blog/:id",
+					name: "blogId",
+					component: BlogId,
+					props: true
+>>>>>>> add3d29af40433cf42f981b794dff80fe25000b8
 				}
 				// {
 				// 	path: "/blog/:id",
