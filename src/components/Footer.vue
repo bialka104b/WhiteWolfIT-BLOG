@@ -96,7 +96,7 @@ export default {
 		</div>
 		<div class="footer-bottom">
 			<div class="footer-bottom__logo">
-				<img src="src/assets/logo-color.png" alt="" />
+				<img src="../assets/logo-color.png" alt="" />
 			</div>
 			<div class="footer-bottom__info">
 				<p>&copy; 2023 IWhiteWolf.IT - Wszelkie prawa zastrzeżone.</p>

@@ -19,14 +19,22 @@ const router = createRouter({
 				{
 					path: "/blog",
 					name: "blog",
-					component: () => import("@/layouts/Blog.vue")
-				},
-				{
-					path: "/blog/:id",
-					name: "blogId",
-					component: import("@/components/BlogId.vue"),
-					props: true
+					component: () => import("@/layouts/Blog.vue"),
+					children: [
+						{
+							path: "/:id",
+							name: "blogId",
+							component: import("@/components/BlogId.vue"),
+							props: true
+						}
+					]
 				}
+				// {
+				// 	path: "/blog/:id",
+				// 	name: "blogId",
+				// 	component: import("@/components/BlogId.vue"),
+				// 	props: true
+				// }
 			]
 		},
 		{
