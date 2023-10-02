@@ -1,24 +1,27 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import "vuetify/styles";
+import { createApp } from "vue";
+import { createPinia } from "pinia";
 
-import App from './App.vue'
-import router from './router'
+import App from "./App.vue";
+import router from "./router";
 
-// Vuetify 3.3.10
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+// plugins
+import Vue3Toastify from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import vuetify from "./plugins/vuetify";
 
-const vuetify = createVuetify({
-  components,
-  directives
-})
+import Footer from "./components/Footer.vue";
+import BlogId from "./components/BlogId.vue";
+const app = createApp(App);
 
-const app = createApp(App)
+app.use(vuetify);
+app.use(Vue3Toastify, {
+	autoClose: 3000
+});
+app.component("Footer", Footer);
+app.component("BlogId", BlogId);
 
-app.use(vuetify)
-app.use(createPinia())
-app.use(router)
+app.use(createPinia());
+app.use(router);
 
-app.mount('#app')
+app.mount("#app");

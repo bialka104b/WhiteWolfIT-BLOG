@@ -1,3 +1,9 @@
+<script setup>
+import Header from "@/components/Header.vue";
+import Main from "@/components/Main.vue";
+</script>
+
 <template>
-  <div>Hello world</div>
+	<Header />
+	<Main />
 </template>

@@ -1,0 +1,8 @@
+@forward "vuetify/settings" with (
+	// VBtn - Button
+	$button-text-letter-spacing: "unset",
+	$button-text-transform: "none",
+
+	// VDialog - Dialog
+	$dialog-elevation: unset
+);

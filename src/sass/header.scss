@@ -1,0 +1,131 @@
+@import "./colors.scss";
+
+.v-carousel {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.v-window {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+}
+
+.v-window__container {
+	width: 100vw;
+}
+
+.header__custom__carousel {
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+}
+
+.header__title {
+	margin-top: 120px;
+	padding: 0 0 20px 0;
+	line-height: 100%;
+	color: map-get($map: $baseColors, $key: hardPink);
+	animation: myAnimY 1s ease 0s 1 normal forwards;
+}
+
+.header__paraf {
+	font-weight: bold;
+	margin: 0 0 40px 0;
+	animation: myAnim 1s ease 0s 1 normal forwards;
+}
+
+.header__btn {
+	background: none;
+	color: map-get($map: $baseColors, $key: hardPink);
+	font-weight: bold;
+	padding: 10px 20px;
+	border: 1px solid map-get($map: $baseColors, $key: hardPink);
+	border-radius: 20px;
+	animation: myAnim 2s ease 0s 1 normal forwards;
+}
+
+$size: 20px;
+$speed: 3s;
+$peakopacity: 0.7;
+
+.header__arrows {
+	width: $size;
+	height: $size;
+	position: absolute;
+	bottom: 50px;
+	left: 50%;
+	transform: translateX(-50%);
+
+	transform: translate(-50%, -50%);
+	&:before {
+		content: "";
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		border-left: calc(#{$size} / 3) solid rgba(0, 0, 0, $peakopacity);
+		border-bottom: calc(#{$size} / 3) solid rgba(0, 0, 0, $peakopacity);
+		transform: translate(calc(#{$size} / 3), calc(#{$size} * 4/3)) rotate(-45deg);
+		animation: arrows $speed linear infinite;
+	}
+	&:after {
+		content: "";
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		border-left: calc(#{$size} / 3) solid rgba(0, 0, 0, $peakopacity);
+		border-bottom: $size solid rgba(0, 0, 0, $peakopacity);
+		transform: translate(calc(#{$size} * 2/3), 0px) rotate(-45deg);
+		animation: arrows $speed linear infinite calc(#{$speed} / -2);
+	}
+}
+
+@keyframes arrows {
+	0% {
+		border-left: calc(#{$size} / 3) solid rgba(0, 0, 0, 0);
+		border-bottom: calc(#{$size} / 3) solid rgba(0, 0, 0, 0);
+		transform: translate(calc(#{$size} / -6), calc(#{$size * 4} / -6))
+			rotate(-45deg);
+	}
+	10%,
+	90% {
+		border-left: calc(#{$size} / 3) solid rgba(0, 0, 0, 0);
+		border-bottom: calc(#{$size} / 3) solid rgba(0, 0, 0, 0);
+	}
+	50% {
+		border-left: calc(#{$size} / 3) solid rgba(0, 0, 0, $peakopacity);
+		border-bottom: calc(#{$size} / 3) solid rgba(0, 0, 0, $peakopacity);
+		transform: translate(calc(#{$size} / -6), 0px) rotate(-45deg);
+	}
+	100% {
+		border-left: calc(#{$size} / 3) solid rgba(0, 0, 0, 0);
+		border-bottom: calc(#{$size} / 3) solid rgba(0, 0, 0, 0);
+		transform: translate(calc(#{$size} / -6), calc(#{$size * 4} / 6))
+			rotate(-45deg);
+	}
+}
+
+@keyframes myAnimY {
+	0% {
+		opacity: 0;
+		transform: translateY(-50px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes myAnim {
+	0% {
+		opacity: 0;
+		transform: translateX(-50px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
