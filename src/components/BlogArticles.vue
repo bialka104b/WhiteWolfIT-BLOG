@@ -1,10 +1,7 @@
 <template>
 	<div class="main__aboutMe blogId" id="BlogArticles">
 		<div class="blogId__container">
-			<img
-				:src="`https://api.iwhitewolf.it/${articleThumbnail}`"
-				alt=""
-			/>
+			<img :src="`http://localhost:5000/${articleThumbnail}`" alt="" />
 			<h2 class="main__small-title">{{ artilesTitle }}</h2>
 		</div>
 		<p class="blogId__paraf">{{ artilesDescription }}</p>
@@ -16,7 +13,9 @@
 </template>
 
 <script>
+import { useRouter } from "vue-router";
 export default {
+	name: "BlogArticle",
 	props: {
 		artilesTitle: String,
 		artilesDescription: String,
@@ -43,11 +42,6 @@ export default {
 		return {
 			timed
 		};
-	},
-	methods: {
-		goBack() {
-			this.$router.back();
-		}
 	}
 };
 </script>

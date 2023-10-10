@@ -18,7 +18,6 @@ export const useStore = defineStore("store", {
 				const res = await articlesId(id);
 				const newData = res.data;
 				this.blogData = newData;
-				console.log(newData.author);
 			} catch (error) {
 				console.error(error);
 			}

@@ -3,8 +3,7 @@
 		<div class="blogId__container">
 			<img
 				v-if="obj && obj.thumbnail && obj.thumbnail.length > 0"
-				:src="`https://api.iwhitewolf.it/${obj.thumbnail[0].url}`"
-				:alt="obj.title"
+				:src="`http://localhost:5000/${obj.thumbnail[0].url}`"
 			/>
 			<h2 class="main__small-title">{{ obj.title }}</h2>
 		</div>
@@ -14,58 +13,44 @@
 				<li @click="showGallery(item)">
 					<img
 						class="blogId__imgs"
-						:src="`https://api.iwhitewolf.it/${item.url}`"
-						alt=""
+						:src="`http://localhost:5000/${item.url}`"
 					/>
 				</li>
 			</template>
-			<template v-if="showModalImage">
-				{{showModalImage}}
-				<ImageModal
-					:src="srcImage"
-					:id="idImage"
-					:showModalImage="showModalImage"
-					@closeModal="closeImageModal"
-				/>
-			</template>
 		</ul>
+		<template v-if="showModalImage">
+			<ImageModal
+				:src="srcImage"
+				:id="idImage"
+				:showModalImage="showModalImage"
+				@closeModal="closeImageModal"
+			/>
+		</template>
 		<p class="blogId__info">
 			{{ `${obj.author?.firstName} ${obj.author?.lastName}` }}
 		</p>
 		<p class="blogId__info">{{ getFormattedDate(obj.createdAt) }}</p>
-		<button class="main__btn blogId__btn" @click="goBack()">Powrót</button>
+		<button class="main__btn blogId__btn" @click="goBack">Powrót</button>
 	</div>
 </template>
+
 <script>
-import { ref, onMounted, getCurrentInstance, watch, reactive } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { articlesId } from "@/services/blogService.js";
 import { useRoute, useRouter } from "vue-router";
 import ImageModal from "@/components/modals/ImageModal.vue";
+
 export default {
 	name: "BlogId",
-	props: {
-		item: Object
-	},
 	components: {
 		ImageModal
 	},
-	setup(props) {
+	setup() {
 		const route = useRoute();
 		const router = useRouter();
 
 		const obj = ref({});
 
-		const showPublicArticles = async (id) => {
-			if (id) {
-				try {
-					console.log(id, "id");
-					const res = await articlesId(id);
-					obj.value = res.data;
-				} catch (error) {
-					console.log(error);
-				}
-			}
-		};
 		function getFormattedDate(date) {
 			const time = new Date(date);
 			const options = {
@@ -79,22 +64,13 @@ export default {
 			return time.toLocaleDateString("pl-PL", options);
 		}
 
-		onMounted(() => {
-			showPublicArticles(route.params.id);
-
-			watch(
-				() => route.path,
-				(newPath) => {
-					showPublicArticles(route.params.id);
-				}
-			);
-		});
+		const blogId = ref(null);
 
 		let showModalImage = ref(false);
 		const srcImage = ref(null);
 		const idImage = ref(null);
 		const showGallery = (item) => {
-			srcImage.value = `https://api.iwhitewolf.it/${item.url}`;
+			srcImage.value = `http://localhost:5000/${item.url}`;
 			idImage.value = item._id;
 			showModalImage.value = true;
 		};
@@ -103,13 +79,35 @@ export default {
 		};
 
 		const goBack = () => {
-			router.back();
+			router.go(-1);
+		};
+
+		watch(
+			() => route.params.blogId,
+			(newBlogId) => {
+				blogId.value = newBlogId;
+				showBlogID(newBlogId);
+			}
+		);
+
+		onMounted(() => {
+			blogId.value = route.params.blogId;
+			showBlogID(blogId.value);
+		});
+
+		const showBlogID = async (id) => {
+			try {
+				const res = await articlesId(id);
+				res && res.data ? (obj.value = res.data) : null;
+			} catch (error) {
+				console.log(error);
+			}
 		};
 
 		return {
+			blogId,
 			closeImageModal,
 			obj,
-			showPublicArticles,
 			showGallery,
 			goBack,
 			getFormattedDate,
@@ -117,14 +115,13 @@ export default {
 			srcImage,
 			idImage
 		};
-	},
-	created() {}
+	}
 };
 </script>
 
 <style>
 .blogId {
-	margin: 50px 20px;
+	margin: 120px 20px;
 }
 .blogId h2 {
 	margin: 0 0 100px 0;

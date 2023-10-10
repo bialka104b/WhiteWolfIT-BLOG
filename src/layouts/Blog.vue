@@ -3,7 +3,7 @@
 		<h1 class="main__title">Blog</h1>
 		<div
 			class="blog__container"
-			@click="handleClick(item._id)"
+			@click="handleClick1(item._id)"
 			v-for="item in obj"
 			:key="item.id"
 		>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { ref, onMounted, getCurrentInstance } from "vue";
+import { ref, onMounted } from "vue";
 import { articles } from "../services/blogService.js";
 import BlogArticles from "../components/BlogArticles.vue";
 import { useRouter } from "vue-router";
@@ -32,37 +32,33 @@ export default {
 	},
 	setup() {
 		const router = useRouter();
-		const clients = {
-			article: articles()
-		};
+
 		const obj = ref([]);
 
-		const showPublicArticles = async () => {
+		const showBlogArticles = async () => {
 			try {
-				const res = await clients.article;
-				obj.value = res.data;
+				const res = await articles();
+
+				res && res.data ? (obj.value = res.data) : null;
 			} catch (error) {
-				console.log(error);
+				console.error("Błąd podczas wykonywania żądania API:", error);
 			}
 		};
 
 		onMounted(() => {
-			showPublicArticles();
+			showBlogArticles();
 		});
 
-		const handleClick = async (id) => {
-			router.push({ name: "blogId", params: { id } });
-			window.scrollTo({
-				top: 0,
-				behavior: "smooth"
-			});
+		const handleClick1 = async (id) => {
+			window.scrollTo(0, 0);
+			router.push({ name: "BlogId", params: { blogId: id } });
 		};
 
 		return {
 			obj,
 			BlogArticles,
-			showPublicArticles,
-			handleClick
+			showBlogArticles,
+			handleClick1
 		};
 	}
 };

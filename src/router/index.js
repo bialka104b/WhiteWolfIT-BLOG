@@ -17,21 +17,18 @@ const router = createRouter({
 					path: "",
 					name: "home",
 					component: HomeView
+				},
+				{
+					path: "blog",
+					name: "Blog",
+					component: Blog
 				}
 			]
 		},
 		{
-			path: "/blog",
-			name: "blog",
-			component: () => import("@/layouts/Blog.vue"),
-			children: [
-				{
-					path: "",
-					name: "blogId",
-					component: import("@/components/BlogId.vue"),
-					props: true
-				}
-			]
+			path: "/blog/:blogId",
+			name: "BlogId",
+			component: BlogId
 		},
 		{
 			path: "/calculator",

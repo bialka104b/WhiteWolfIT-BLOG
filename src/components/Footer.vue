@@ -34,17 +34,14 @@ export default {
 			showPublicArticles();
 		});
 
-		const handleClick = async (id) => {
-			router.push({ name: "blogId", params: { id } });
-			window.scrollTo({
-				top: 0,
-				behavior: "smooth"
-			});
+		const redirectToBlogId = async (id) => {
+			window.scrollTo(0, 0);
+			router.push({ name: "BlogId", params: { blogId: id } });
 		};
 
 		return {
 			obj,
-			handleClick,
+			redirectToBlogId,
 			showPublicArticles,
 			reduceParagraph
 		};
@@ -67,10 +64,10 @@ export default {
 			<div class="footer-top__news">
 				<h1>Aktualności</h1>
 				<ul>
-					<template v-for="item in obj" :key="item._id">
-						<li @click="handleClick(item._id)">
+					<template v-for="item in obj.slice(-3)" :key="item._id">
+						<li @click="redirectToBlogId(item._id)">
 							<img
-								:src="`https://api.iwhitewolf.it/${
+								:src="`http://localhost:5000/${
 									item.thumbnail[item.thumbnail.length - 1]
 										.url
 								}`"

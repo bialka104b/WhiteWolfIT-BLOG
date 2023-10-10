@@ -1,10 +1,14 @@
 <template>
-	<div id="ImageModal" class="background-gallery" v-if="showModalImage">
-		<button @click="closeModal()">
-			<img :src="src" :id="id" />
-		</button>
+	<div
+		id="ImageModal"
+		class="background-gallery"
+		v-if="showModalImage"
+		@click="closeModal()"
+	>
+		<img :src="src" :id="id" />
 	</div>
 </template>
+
 <script>
 import { defineComponent } from "vue";
 
@@ -14,7 +18,7 @@ export default defineComponent({
 	props: {
 		src: {
 			type: String,
-			require: true
+			required: true
 		},
 		showModalImage: {
 			type: Boolean
@@ -33,6 +37,7 @@ export default defineComponent({
 	}
 });
 </script>
+
 <style scoped lang="scss">
 #ImageModal {
 	position: fixed;

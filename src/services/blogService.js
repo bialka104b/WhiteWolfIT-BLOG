@@ -6,6 +6,10 @@ export async function articles() {
 }
 
 export async function articlesId(id) {
-	const response = await axios.get(`/articles/${id}`);
-	return response;
+	if (id === undefined) {
+		return;
+	} else {
+		const response = await axios.get(`/articles/${id}`);
+		return response;
+	}
 }

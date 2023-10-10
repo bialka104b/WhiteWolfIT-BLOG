@@ -26,20 +26,20 @@ const router = useRouter();
 const route = useRoute();
 const editMode = ref(route.params.id);
 onBeforeMount(async () => {
-    const { id } = route.params;
-    if(id) {
-        try {
-            loading.value = true;
-            const response = await articlesId(id, true);
-            data.value = response.data;
-        } catch {
-            await router.push({ name: 'admin-articles'})
-            toast.error('An error occured [articleForm]')
-        } finally {
-            loading.value = false;
-        }
-    }
-})
+	const { id } = route.params;
+	if (id) {
+		try {
+			loading.value = true;
+			const response = await articlesId(id, true);
+			data.value = response.data;
+		} catch {
+			await router.push({ name: "admin-articles" });
+			toast.error("An error occured [articleForm]");
+		} finally {
+			loading.value = false;
+		}
+	}
+});
 
 // rules and validation
 const formValid = ref(false);
@@ -111,33 +111,28 @@ const saveArticle = async () => {
 		loading.value = false;
 	}
 };
-
-// save thumbnail
-const saveThumbnail = async () => {
-	console.log(thumbnail.value);
-};
 </script>
 
 <template>
-    <div v-if="loading && editMode">
-        <v-progress-circular indeterminate />
-        <span class="text-body-1 ml-5">Loading data...</span>
-    </div>
-    <v-form v-else v-model="formValid" @submit.prevent="saveArticle">
-        <v-row no-gutters>
-            <v-col cols="12">
-                <v-text-field
-                    v-model="data.title"
-                    :rules="titleRules"
-                    :counter="titleMaxLength"
-                    label="Title *"
-                    variant="solo"
-                    density="compact"
-                    hide-details="auto"
-                    clearable
-                    required
-                />
-            </v-col>
+	<div v-if="loading && editMode">
+		<v-progress-circular indeterminate />
+		<span class="text-body-1 ml-5">Loading data...</span>
+	</div>
+	<v-form v-else v-model="formValid" @submit.prevent="saveArticle">
+		<v-row no-gutters>
+			<v-col cols="12">
+				<v-text-field
+					v-model="data.title"
+					:rules="titleRules"
+					:counter="titleMaxLength"
+					label="Title *"
+					variant="solo"
+					density="compact"
+					hide-details="auto"
+					clearable
+					required
+				/>
+			</v-col>
 
 			<v-col cols="12">
 				<v-textarea
@@ -187,16 +182,16 @@ const saveThumbnail = async () => {
 			<v-divider vertical class="mx-5"></v-divider>
 
 			<v-btn
-                flat
-                variant="tonal"
-                prepend-icon="mdi-check"
-                :loading="loading"
-                :disabled="loading"
-                color="green"
-                type="submit"
-            >
-                {{ editMode ? 'Update article' : 'Save' }}
-            </v-btn>
+				flat
+				variant="tonal"
+				prepend-icon="mdi-check"
+				:loading="loading"
+				:disabled="loading"
+				color="green"
+				type="submit"
+			>
+				{{ editMode ? "Update article" : "Save" }}
+			</v-btn>
 
 			<template v-if="editMode">
 				<DeleteButton

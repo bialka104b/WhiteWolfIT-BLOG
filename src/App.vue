@@ -7,6 +7,8 @@ import { useCookies } from "vue3-cookies";
 import { useTheme } from "vuetify";
 import { useUserStore } from "@/stores/user.js";
 import LoadingScreen from "@/components/LoadingScreen.vue";
+import Footer from "@/components/Footer.vue";
+import AppBar from "@/components/AppBar.vue";
 
 const { cookies } = useCookies();
 const userStore = useUserStore();
@@ -28,7 +30,9 @@ theme.global.name.value = isDark ? "dark" : "light";
 
 <template>
 	<v-app>
+		<AppBar />
 		<LoadingScreen v-if="loading" />
 		<RouterView v-else />
+		<Footer />
 	</v-app>
 </template>
