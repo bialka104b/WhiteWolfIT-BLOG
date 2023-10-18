@@ -118,6 +118,9 @@ export default defineComponent({
 					<h4>{{ article.title }}</h4>
 					<p>{{ article.description }}</p>
 				</div>
+				<div>
+					<p>Sprawdzenie</p>
+				</div>
 			</div>
 		</section>
 	</div>
