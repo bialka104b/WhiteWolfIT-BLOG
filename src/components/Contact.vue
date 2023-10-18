@@ -117,7 +117,7 @@ export default defineComponent({
 					<img :src="article.thumbnail.url" alt="" />
 					<h4>{{ article.title }}</h4>
 					<p>{{ article.description }}</p>
-					<div>Sprawdzam123</div>
+					<div>Sprawdzam12362342132</div>
 				</div>
 			</div>
 		</section>
