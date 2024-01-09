@@ -1,11 +1,14 @@
 <script>
 import { ref, onMounted, getCurrentInstance } from "vue";
 import { articles } from "@/services/blogService.js";
-
+import ButtonItem from "@/components/ButtonItem.vue";
 export default {
 	name: "Footer",
 	props: {
 		item: Object
+	},
+	components: {
+		ButtonItem
 	},
 	setup() {
 		function reduceParagraph(description) {
@@ -87,7 +90,7 @@ export default {
 				</ul>
 			</div>
 			<div class="footer-top__socials">
-				<h1>Socjal</h1>
+				<h1>Social</h1>
 				<div class=""></div>
 				<div class=""></div>
 				<div class=""></div>
@@ -103,6 +106,10 @@ export default {
 			</div>
 		</div>
 	</footer>
+	<ButtonItem text="hey did you know">
+	</ButtonItem>
+	<ButtonItem bgColor="#f935fc" text="that in terms of">
+	</ButtonItem>
 </template>
 
 <style>
