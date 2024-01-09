@@ -106,7 +106,7 @@ export default {
 		<div class="blogId__container">
 			<img
 				v-if="obj && obj.thumbnail && obj.thumbnail.length > 0"
-				:src="`https://api.iwhitewolf.it/${obj.thumbnail[0].url}`"
+				:src="`http://localhost:5001/${obj.thumbnail[0].url}`"
 				:alt="obj.title"
 			/>
 			<h2 class="main__small-title">{{ obj.title }}</h2>
@@ -120,7 +120,7 @@ export default {
 			>
 				<img
 					class="blogId__imgs"
-					:src="`https://api.iwhitewolf.it/${item.url}`"
+					:src="`http://localhost:5001/${item.url}`"
 					alt=""
 				/>
 			</li>

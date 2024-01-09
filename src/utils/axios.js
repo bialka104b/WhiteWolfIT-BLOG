@@ -3,7 +3,7 @@ import { useCookies } from "vue3-cookies";
 import { useUserStore } from "@/stores/user.js";
 
 const instance = axios.create({
-	baseURL: "https://api.iwhitewolf.it/v1"
+	baseURL: "http://localhost:5001/v1"
 });
 
 instance.interceptors.response.use(

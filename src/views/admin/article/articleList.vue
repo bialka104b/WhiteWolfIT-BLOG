@@ -108,7 +108,7 @@ const changeVisibility = async (id, val) => {
 					<v-card class="d-flex flex-column h-100">
 						<template v-if="item.thumbnail[0]">
 							<v-img
-								:src="`https://api.iwhitewolf.it/${item.thumbnail[0].url}`"
+								:src="`http://localhost:5001/${item.thumbnail[0].url}`"
 								:alt="item.thumbnail[0].url"
 								height="128"
 								contain

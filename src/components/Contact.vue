@@ -18,7 +18,7 @@ export default defineComponent({
 	},
 	async created() {
 		await this.articleOnclick();
-		// const res = await fetch('https://api.iwhitewolf.it/v1/articles')
+		// const res = await fetch('http://localhost:5001/v1/articles')
 		// const json = await res.json()
 	},
 	methods: {

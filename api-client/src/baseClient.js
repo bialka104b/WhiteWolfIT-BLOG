@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URI = "https://api.iwhitewolf.it/v1/";
+const BASE_URI = "http://localhost:5001/v1";
 
 export const createClient = (options = {}) => {
 	const baseOptions = {

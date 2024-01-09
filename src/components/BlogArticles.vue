@@ -2,7 +2,7 @@
 	<div class="main__aboutMe blogId">
 		<div class="blogId__container">
 			<img
-				:src="`https://api.iwhitewolf.it/${articleThumbnail}`"
+				:src="`http://localhost:5001/${articleThumbnail}`"
 				alt=""
 			/>
 			<h2 class="main__small-title">{{ artilesTitle }}</h2>

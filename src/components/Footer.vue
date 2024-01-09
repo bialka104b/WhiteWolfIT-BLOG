@@ -73,7 +73,7 @@ export default {
 						@click="handleClick(item._id)"
 					>
 						<img
-							:src="`https://api.iwhitewolf.it/${
+							:src="`http://localhost:5001/${
 								item.thumbnail[item.thumbnail.length - 1].url
 							}`"
 							alt=""

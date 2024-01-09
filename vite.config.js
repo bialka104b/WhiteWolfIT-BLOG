@@ -17,7 +17,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			"/api": {
-				target: "https://api.iwhitewolf.it/v1",
+				target: "http://localhost:5001/v1",
 				changeOrigin: true,
 				secure: false
 			}
